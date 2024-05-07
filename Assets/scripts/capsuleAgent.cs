@@ -18,6 +18,7 @@ public class capsuleAgent : Agent
     public override void CollectObservations(VectorSensor sensor) {
         sensor.AddObservation(this.transform.localPosition);//weet waar agent is
         sensor.AddObservation(Target.transform.localPosition);//weet waar target is
+        // obstacles werken met rays
     }
     public float speedMultiplier = 0.1f;
     public float rotationmultiplier = 6f;
