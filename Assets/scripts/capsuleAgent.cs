@@ -9,30 +9,30 @@ public class capsuleAgent : Agent
 {
     public Transform Target;
     public override void OnEpisodeBegin() {
-        if (this.transform.localPosition.y < 0)
-        {
+        
+      //zet de agent op zijn plaats.
 
             this.transform.localPosition = new Vector3(0, 0.8f, 0); this.transform.localRotation = Quaternion.identity;
-        }
+        
     }
     public override void CollectObservations(VectorSensor sensor) {
-        sensor.AddObservation(this.transform.localPosition);
-
+        sensor.AddObservation(this.transform.localPosition);//weet waar agent is
+        sensor.AddObservation(Target.transform.localPosition);//weet waar target is
     }
     public float speedMultiplier = 0.1f;
-    public float rotationmultiplier = 3f;
+    public float rotationmultiplier = 6f;
     public float jumpForce = 5f;
     public Rigidbody rb;
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-
+        //beweging
         Vector3 controlSignal = Vector3.zero;
 
         controlSignal.z = actionBuffers.ContinuousActions[1];
         transform.Translate(controlSignal * speedMultiplier);
         transform.Rotate(0.0f, rotationmultiplier * actionBuffers.ContinuousActions[0], 0.0f);
         float jumpAction = actionBuffers.ContinuousActions[2];
-
+        //springen
         if (jumpAction > 0.5f && transform.position.y <= 2)
         {
             
@@ -40,8 +40,10 @@ public class capsuleAgent : Agent
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             
         }
+
     }
 
+    //code zorgt dat de agents bewegingen getest kunnen worden.
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         var continuousActionsOut = actionsOut.ContinuousActions;
