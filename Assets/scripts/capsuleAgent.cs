@@ -20,7 +20,7 @@ public class capsuleAgent : Agent
 
     }
     public float speedMultiplier = 0.1f;
-    public float rotationmultiplier = 1f;
+    public float rotationmultiplier = 3f;
     public float jumpForce = 5f;
     public Rigidbody rb;
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -47,6 +47,6 @@ public class capsuleAgent : Agent
         var continuousActionsOut = actionsOut.ContinuousActions;
         continuousActionsOut[0] = Input.GetAxis("Horizontal");
         continuousActionsOut[1] = Input.GetAxis("Vertical");
-        continuousActionsOut[2] = Input.GetKey(KeyCode.Space) ? 1f : 0f; ;
+        continuousActionsOut[2] = Input.GetKey(KeyCode.RightShift) ? 1f : 0f; ;
     }
 }
