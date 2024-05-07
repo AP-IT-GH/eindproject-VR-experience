@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 [AddComponentMenu("Nokobot/Modern Guns/Simple Shoot")]
@@ -13,12 +14,8 @@ public class SimpleShoot : MonoBehaviour
     public GameObject casingPrefab;
     public GameObject muzzleFlashPrefab;
 
-    [Header("VR input.")]
-    public InputActionReference triggerPressed;
-
     [Header("Location Refrences")]
     [SerializeField] private Animator gunAnimator;
-    [SerializeField] private Animator baseGunAnimator;
     [SerializeField] private Transform barrelLocation;
     [SerializeField] private Transform casingExitLocation;
 
@@ -27,11 +24,33 @@ public class SimpleShoot : MonoBehaviour
     [Tooltip("Bullet Speed")] [SerializeField] private float shotPower = 500f;
     [Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 150f;
 
+    public AudioSource source;
+    public AudioClip fireSound;
+    public AudioClip reload;
+    public AudioClip noAmmo;
 
+    public Magazine magazine;
+    public XRBaseInteractor socketInteractor;
+    private bool hasSlide = true;
+
+    public void AddMagazine(XRBaseInteractable interactable)
+    {
+        magazine = interactable.GetComponent<Magazine>();
+        source.PlayOneShot(reload);
+        hasSlide = false;
+    }
+    public void RemoveMagazine(XRBaseInteractable interactable)
+    {
+        magazine = null;
+        source.PlayOneShot(reload);
+    }
+    public void Slide()
+    {
+        hasSlide = true;
+        source.PlayOneShot(reload);
+    }
     void Start()
     {
-        triggerPressed.action.started += TriggerFire;
-
         if (barrelLocation == null)
             barrelLocation = transform;
 
@@ -39,20 +58,25 @@ public class SimpleShoot : MonoBehaviour
             gunAnimator = GetComponentInChildren<Animator>();
     }
 
-    private void TriggerFire(InputAction.CallbackContext context)
+    public void PullTheTrigger()
     {
-        baseGunAnimator.SetTrigger("Reload");
-        //gunAnimator.SetTrigger("Fire");
+        if (magazine && magazine.numberOfBullet > 0 && hasSlide)
+        {
+            gunAnimator.SetTrigger("Fire");
+        }
+        else
+        {
+            source.PlayOneShot(noAmmo);
+        }
     }
-
-    void Update()
-    {
-    }
-
 
     //This function creates the bullet behavior
     void Shoot()
     {
+        magazine.numberOfBullet--;
+
+        source.PlayOneShot(fireSound);
+
         if (muzzleFlashPrefab)
         {
             //Create the muzzle flash
@@ -90,5 +114,6 @@ public class SimpleShoot : MonoBehaviour
         //Destroy casing after X seconds
         Destroy(tempCasing, destroyTimer);
     }
+
 
 }
