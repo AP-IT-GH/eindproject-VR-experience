@@ -485,7 +485,7 @@ MonoBehaviour:
     VectorObservationSize: 3
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 2
+      m_NumContinuousActions: 3
       BranchSizes: 01000000
     VectorActionSize: 
     VectorActionDescriptions: []
@@ -517,6 +517,9 @@ MonoBehaviour:
   MaxStep: 0
   Target: {fileID: 0}
   speedMultiplier: 0.1
+  rotationmultiplier: 0.3
+  jumpForce: 1
+  rb: {fileID: 2096420142}
 --- !u!54 &2096420142
 Rigidbody:
   m_ObjectHideFlags: 0
