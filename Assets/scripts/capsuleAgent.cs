@@ -21,7 +21,7 @@ public class capsuleAgent : Agent
         // obstacles werken met rays
     }
     public float speedMultiplier = 0.1f;
-    public float rotationmultiplier = 6f;
+    public float rotationmultiplier = 10f;
     public float jumpForce = 5f;
     public Rigidbody rb;
     public override void OnActionReceived(ActionBuffers actionBuffers)
