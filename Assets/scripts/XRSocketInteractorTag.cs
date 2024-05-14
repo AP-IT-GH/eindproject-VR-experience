@@ -12,4 +12,5 @@ public class XRSocketInteractorTag : XRSocketInteractor
     {
         return base.CanSelect(interactable) && interactable.CompareTag(targetTag);
     }
+
 }
