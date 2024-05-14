@@ -50,7 +50,11 @@ public class capsuleAgent : Agent
             SetReward(1.0f);
             EndEpisode();
         }
-
+        else if (this.transform.localPosition.y < -0.5)
+        {
+            SetReward(-0.5f);
+            EndEpisode();
+        }
 
     }
 
