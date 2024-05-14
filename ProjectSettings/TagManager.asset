@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Magazine
   - wall
+  - Zombie
   layers:
   - Default
   - TransparentFX
