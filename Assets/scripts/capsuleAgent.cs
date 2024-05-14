@@ -21,7 +21,7 @@ public class capsuleAgent : Agent
         // obstacles werken met rays
     }
     public float speedMultiplier = 0.1f;
-    public float rotationmultiplier = 10f;
+    public float rotationmultiplier = 20f;
     public float jumpForce = 5f;
     public Rigidbody rb;
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -41,6 +41,16 @@ public class capsuleAgent : Agent
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             
         }
+        //punten
+        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
+
+        // target bereikt
+        if (distanceToTarget < 1.42f)
+        {
+            SetReward(1.0f);
+            EndEpisode();
+        }
+
 
     }
 
