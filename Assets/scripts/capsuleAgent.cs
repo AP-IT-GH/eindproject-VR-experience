@@ -12,7 +12,7 @@ public class capsuleAgent : Agent
         
       //zet de agent op zijn plaats.
 
-            this.transform.localPosition = new Vector3(0, 0.8f, 0); this.transform.localRotation = Quaternion.identity;
+            this.transform.localPosition = new Vector3(-16f, 0.8f, 9); this.transform.localRotation = Quaternion.identity;
         
     }
     public override void CollectObservations(VectorSensor sensor) {
@@ -21,8 +21,8 @@ public class capsuleAgent : Agent
         // obstacles werken met rays
     }
     public float speedMultiplier = 0.1f;
-    public float rotationmultiplier = 20f;
-    public float jumpForce = 5f;
+    public float rotationmultiplier = 1f;
+    public float jumpForce = 0.1f;
     public Rigidbody rb;
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
