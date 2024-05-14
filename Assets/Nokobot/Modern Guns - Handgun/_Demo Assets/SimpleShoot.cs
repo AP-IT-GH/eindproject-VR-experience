@@ -104,7 +104,6 @@ public class SimpleShoot : MonoBehaviour
 
     public void Hit(Collision hit)
     {
-        Debug.Log(hit.gameObject.tag);
         if (hit.gameObject.CompareTag("Zombie"))
         {
             Destroy(hit.gameObject);
