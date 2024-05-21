@@ -8,6 +8,7 @@ TagManager:
   - wall
   - web
   - Zombie
+  - hole
   layers:
   - Default
   - TransparentFX

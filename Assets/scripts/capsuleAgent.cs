@@ -9,24 +9,29 @@ public class capsuleAgent : Agent
 {
     public Transform Target;
     public override void OnEpisodeBegin() {
-        
-      //zet de agent op zijn plaats.
 
-            this.transform.localPosition = new Vector3(16f, 0.8f, 9); this.transform.localRotation = Quaternion.identity;
-        
+        //zet de agent op zijn plaats en collider aan.
+        gameObject.GetComponent<Collider>().enabled = true;
+        this.transform.localPosition = new Vector3(16f, 0.8f, 0);//start plaats =(23f, 0.8f, 0)
+        this.transform.localRotation = Quaternion.identity;// zet op standaart locatie
+        this.transform.Rotate(0.0f, -90f, 0.0f);//draai -90 graden 
+
+
     }
     public override void CollectObservations(VectorSensor sensor) {
         sensor.AddObservation(this.transform.localPosition);//weet waar agent is
         sensor.AddObservation(Target.transform.localPosition);//weet waar target is
         // obstacles werken met rays
     }
-    public float speedMultiplier = 0.1f;
-    public float rotationmultiplier = 1f;
-    public float jumpForce = 0.1f;
+    
+    private float speedMultiplier = 0.1f;
+    private float rotationmultiplier = 1f;
+    private float jumpForce = 0.1f;
     public Rigidbody rb;
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //beweging
+        
         Vector3 controlSignal = Vector3.zero;
 
         controlSignal.z = actionBuffers.ContinuousActions[1];
@@ -36,10 +41,10 @@ public class capsuleAgent : Agent
         //springen
         if (jumpAction > 0.5f && transform.position.y <= 0.5)
         {
-            
+
 
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            
+
         }
         //punten
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
@@ -55,10 +60,37 @@ public class capsuleAgent : Agent
             SetReward(-0.5f);
             EndEpisode();
         }
+
         
-
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+    if (collision.gameObject.tag == "hole")
+        {
+            gameObject.GetComponent<Collider>().enabled = false;
+            speedMultiplier = 0f;
+            rotationmultiplier = 0f;
+            jumpForce = -0.1f;
+        
+            Debug.Log(speedMultiplier);
+        }
+    }
+    private void OnTriggerEnter(Collider obstacle)
+    {
+        if(obstacle.tag == "web")
+        {
+            speedMultiplier = 0.01f;
+            Debug.Log(speedMultiplier);
+        }
+    }
+    private void OnTriggerExit(Collider obstacle)
+    {
+        if (obstacle.tag == "web")
+        {
+            speedMultiplier = 0.1f;
+            Debug.Log(speedMultiplier);
+        }
+    }
     //code zorgt dat de agents bewegingen getest kunnen worden.
     public override void Heuristic(in ActionBuffers actionsOut)
     {
