@@ -1,7 +1,12 @@
 fileFormatVersion: 2
-guid: baec97c2a1e4d420081cea68cfdb4fb0
+<<<<<<<< HEAD:Assets/HangingPlantsVolumeFive.meta
+guid: b584a10db42953046bc3b2bd04116cdf
 folderAsset: yes
 DefaultImporter:
+========
+guid: 3d2b435f1f799364ea4874f40cd42ba0
+PrefabImporter:
+>>>>>>>> emirbranch:Assets/Prefabs/Cube.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

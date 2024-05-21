@@ -4,8 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Magazine
   - wall
   - web
+  - Zombie
   layers:
   - Default
   - TransparentFX
@@ -13,8 +15,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Grab Interactable
+  - Player
   - 
   - 
   - 
