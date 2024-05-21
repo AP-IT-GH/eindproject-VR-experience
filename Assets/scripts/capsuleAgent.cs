@@ -12,7 +12,7 @@ public class capsuleAgent : Agent
         
       //zet de agent op zijn plaats.
 
-            this.transform.localPosition = new Vector3(-16f, 0.8f, 9); this.transform.localRotation = Quaternion.identity;
+            this.transform.localPosition = new Vector3(16f, 0.8f, 9); this.transform.localRotation = Quaternion.identity;
         
     }
     public override void CollectObservations(VectorSensor sensor) {
@@ -34,7 +34,7 @@ public class capsuleAgent : Agent
         transform.Rotate(0.0f, rotationmultiplier * actionBuffers.ContinuousActions[0], 0.0f);
         float jumpAction = actionBuffers.ContinuousActions[2];
         //springen
-        if (jumpAction > 0.5f && transform.position.y <= 2)
+        if (jumpAction > 0.5f && transform.position.y <= 0.5)
         {
             
 
@@ -50,11 +50,12 @@ public class capsuleAgent : Agent
             SetReward(1.0f);
             EndEpisode();
         }
-        else if (this.transform.localPosition.y < -0.5)
+        else if (this.transform.localPosition.y < -2)
         {
             SetReward(-0.5f);
             EndEpisode();
         }
+        
 
     }
 
