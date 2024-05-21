@@ -12,7 +12,7 @@ public class capsuleAgent : Agent
 
         //zet de agent op zijn plaats en collider aan.
         gameObject.GetComponent<Collider>().enabled = true;
-        this.transform.localPosition = new Vector3(16f, 0.8f, 0);//start plaats =(23f, 0.8f, 0)
+        this.transform.localPosition = new Vector3(16f, 0.8f, 0);//start plaats =(23f, 0.8f, tussen -7 en 9)
         this.transform.localRotation = Quaternion.identity;// zet op standaart locatie
         this.transform.Rotate(0.0f, -90f, 0.0f);//draai -90 graden 
 
@@ -27,6 +27,9 @@ public class capsuleAgent : Agent
     private float speedMultiplier = 0.1f;
     private float rotationmultiplier = 1f;
     private float jumpForce = 0.1f;
+
+    private bool middebereikt = false;
+    private bool bijnaDaar = false;
     public Rigidbody rb;
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
@@ -55,13 +58,18 @@ public class capsuleAgent : Agent
             SetReward(1.0f);
             EndEpisode();
         }
-        else if (this.transform.localPosition.y < -2)
+      
+        // in de juiste richting aan het gaan
+        if (transform.position.x <= 11.5 && middebereikt == false)
         {
-            SetReward(-0.5f);
-            EndEpisode();
+            SetReward(0.3f);
+            middebereikt = true;
         }
-
-        
+        if (transform.position.x <= 6 && bijnaDaar == false)
+        {
+            SetReward(0.5f);
+            bijnaDaar = true;
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -71,7 +79,8 @@ public class capsuleAgent : Agent
             speedMultiplier = 0f;
             rotationmultiplier = 0f;
             jumpForce = -0.1f;
-        
+            SetReward(-0.5f);
+            EndEpisode();
             Debug.Log(speedMultiplier);
         }
     }
