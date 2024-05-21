@@ -55,6 +55,7 @@ public class capsuleAgent : Agent
             SetReward(-0.5f);
             EndEpisode();
         }
+        
 
     }
 
