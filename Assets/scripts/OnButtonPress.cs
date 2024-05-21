@@ -10,6 +10,8 @@ public class OnButtonPress : MonoBehaviour
     [Tooltip("Prefab to spawn on button press")]
     public GameObject prefabToSpawn;
 
+
+
     [Tooltip("Transform for raycasting")]
     public Transform raycastOrigin;
 
@@ -78,12 +80,13 @@ public class OnButtonPress : MonoBehaviour
         OnRelease.Invoke();
     }
 
+
     private void SpawnPrefab()
     {
         RaycastHit hit;
         if (Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out hit, maxRayDistance, raycastLayerMask))
         {
-            Instantiate(prefabToSpawn, hit.point, Quaternion.identity);
+            GameObject spawnedObject = Instantiate(prefabToSpawn, hit.point, Quaternion.identity);
         }
     }
 
@@ -91,4 +94,10 @@ public class OnButtonPress : MonoBehaviour
     {
         Debug.Log("LogBoy");
     }
+
+    public void ChangePrefab(GameObject newPrefab)
+    {
+        prefabToSpawn = newPrefab;
+    }
+
 }

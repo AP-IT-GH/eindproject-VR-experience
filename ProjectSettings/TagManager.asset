@@ -9,6 +9,10 @@ TagManager:
   - web
   - Zombie
   - hole
+  - Barrier
+  - Web
+  - Hole
+  - SpawnBox
   layers:
   - Default
   - TransparentFX
@@ -18,7 +22,7 @@ TagManager:
   - UI
   - Grab Interactable
   - Player
-  - 
+  - Objects
   - 
   - 
   - 
