@@ -3,42 +3,79 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
+using System.Collections;
 
 
 public class capsuleAgent : Agent
 {
-    public Transform Target;
+    [Header("ML AGENT SETTINGS")]
+    public float TooLateTimeSec = 30;
 
+    [Header("OBJECTS")]
+    public Transform Target;
+    public Rigidbody rb;
+    public BarrierSpawner Spawner;
+
+    private Vector3 initPosition;
+    private Quaternion initRotation;
+    private void Start()
+    {
+        initPosition = gameObject.transform.position;
+        initRotation = gameObject.transform.rotation;
+    }
+    
     private float speedMultiplier = 0.1f;
-    private float rotationmultiplier = 1f;
+    private float rotationmultiplier;
     private float jumpForce = 10f;
 
-    private bool middebereikt = false;
-    private bool bijnaDaar = false;
-    public Rigidbody rb;
+    private Coroutine countdown;
     public override void OnEpisodeBegin() {
 
         //zet de agent op zijn plaats en collider aan.
-        gameObject.GetComponent<Collider>().enabled = true;
-        this.transform.localPosition = new Vector3(16f, 0.8f, 0);//start plaats =(23f, 0.8f, tussen -7 en 9)
-        this.transform.localRotation = Quaternion.identity;// zet op standaart locatie
-        this.transform.Rotate(0.0f, -90f, 0.0f);//draai -90 graden 
-        speedMultiplier = 0.1f;
-        rotationmultiplier = 1f;
-        jumpForce = 10f;
+        Spawner.SpawnRandomizedObjects();
+        if (countdown != null)
+            StopCoroutine(countdown);
 
-}
+        gameObject.GetComponent<Collider>().enabled = true;
+
+        transform.localPosition = initPosition; 
+        transform.localRotation = initRotation;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        speedMultiplier = 0.1f;
+        rotationmultiplier = 2f;
+        jumpForce = 10f;
+        countdown = StartCoroutine(StartCountdown(TooLateTimeSec));
+    }
     public override void CollectObservations(VectorSensor sensor) {
         sensor.AddObservation(this.transform.localPosition);//weet waar agent is
         sensor.AddObservation(Target.transform.localPosition);//weet waar target is
         // obstacles werken met rays
     }
-    
-   
+    private void GiveAwardBasedOnDistance()
+    {
+        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
+        float reward = ((distanceToTarget / 40) - 1) * -1;
+        Debug.Log("Award given for distance: " + reward);
+        AddReward(reward);
+    }
+    float currCountdownValue;
+    public IEnumerator StartCountdown(float countdownValue = 50)
+    {
+        currCountdownValue = countdownValue;
+        while (currCountdownValue > 0)
+        {
+            yield return new WaitForSeconds(1.0f);
+            currCountdownValue--;
+        }
+        Debug.Log("Too late!");
+        GiveAwardBasedOnDistance();
+        EndEpisode();
+    }
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //beweging
-        
         Vector3 controlSignal = Vector3.zero;
 
         controlSignal.z = actionBuffers.ContinuousActions[1];
@@ -48,10 +85,7 @@ public class capsuleAgent : Agent
         //springen
         if (jumpAction > 0.5f && transform.position.y <= 0.5)
         {
-
-
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
         }
         //punten
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
@@ -59,49 +93,48 @@ public class capsuleAgent : Agent
         // target bereikt
         if (distanceToTarget < 1.42f)
         {
-            SetReward(1.0f);
+            SetReward(2.0f);
+            EndEpisode();
+            Debug.Log("We made it to the target!: Reward = 2");
+        }
+        if (transform.position.y < -5)
+        {
+            AddReward(-1f);
+            GiveAwardBasedOnDistance();
+            Debug.Log("Fell through a hole! Punishment: -1");
             EndEpisode();
         }
-      
-        // in de juiste richting aan het gaan
-        if (transform.position.x <= 11.5 && middebereikt == false)
-        {
-            SetReward(0.3f);
-            middebereikt = true;
-        }
-        if (transform.position.x <= 6 && bijnaDaar == false)
-        {
-            SetReward(0.5f);
-            bijnaDaar = true;
-        }
     }
+    private bool startWebTouch = false;
     private void OnCollisionEnter(Collision collision)
     {
-    if (collision.gameObject.tag == "hole")
+        if (collision.gameObject.tag == "hole")
         {
             gameObject.GetComponent<Collider>().enabled = false;
             speedMultiplier = 0f;
             rotationmultiplier = 0f;
             jumpForce = -0.1f;
-            SetReward(-0.5f);
-            EndEpisode();
-            Debug.Log(speedMultiplier);
         }
     }
     private void OnTriggerEnter(Collider obstacle)
     {
+        if (!startWebTouch)
+        {
+            AddReward(-0.5f);
+            Debug.Log("Touched web! Punishment: -0.5");
+        }
         if(obstacle.tag == "web")
         {
+            startWebTouch = true;
             speedMultiplier = 0.01f;
-            Debug.Log(speedMultiplier);
         }
     }
     private void OnTriggerExit(Collider obstacle)
     {
         if (obstacle.tag == "web")
         {
+            startWebTouch = false;
             speedMultiplier = 0.1f;
-            Debug.Log(speedMultiplier);
         }
     }
     //code zorgt dat de agents bewegingen getest kunnen worden.
@@ -110,6 +143,6 @@ public class capsuleAgent : Agent
         var continuousActionsOut = actionsOut.ContinuousActions;
         continuousActionsOut[0] = Input.GetAxis("Horizontal");
         continuousActionsOut[1] = Input.GetAxis("Vertical");
-        continuousActionsOut[2] = Input.GetKey(KeyCode.RightShift) ? 1f : 0f; ;
+        continuousActionsOut[2] = Input.GetKey(KeyCode.RightShift) ? 1f : 0f;
     }
 }
