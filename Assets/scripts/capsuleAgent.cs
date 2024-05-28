@@ -57,7 +57,7 @@ public class capsuleAgent : Agent
     private void GiveAwardBasedOnDistance()
     {
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
-        float reward = (distanceToTarget / 40) - 1;
+        float reward = (distanceToTarget / 40) * -1;
         Debug.Log("Award given for distance: " + reward);
         AddReward(reward);
     }
