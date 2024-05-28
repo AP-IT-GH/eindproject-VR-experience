@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -2652085155695159450}
   m_Layer: 8
   m_Name: Hole
-  m_TagString: Hole
+  m_TagString: hole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,6 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56cd822be3980224fba0d278f46aaee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeRandomly: {fileID: 0}
+  spawnIndex: 0
 --- !u!54 &-2652085155695159450
 Rigidbody:
   m_ObjectHideFlags: 0

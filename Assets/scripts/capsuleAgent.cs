@@ -8,6 +8,14 @@ using Unity.MLAgents.Actuators;
 public class capsuleAgent : Agent
 {
     public Transform Target;
+
+    private float speedMultiplier = 0.1f;
+    private float rotationmultiplier = 1f;
+    private float jumpForce = 10f;
+
+    private bool middebereikt = false;
+    private bool bijnaDaar = false;
+    public Rigidbody rb;
     public override void OnEpisodeBegin() {
 
         //zet de agent op zijn plaats en collider aan.
@@ -15,22 +23,18 @@ public class capsuleAgent : Agent
         this.transform.localPosition = new Vector3(16f, 0.8f, 0);//start plaats =(23f, 0.8f, tussen -7 en 9)
         this.transform.localRotation = Quaternion.identity;// zet op standaart locatie
         this.transform.Rotate(0.0f, -90f, 0.0f);//draai -90 graden 
+        speedMultiplier = 0.1f;
+        rotationmultiplier = 1f;
+        jumpForce = 10f;
 
-
-    }
+}
     public override void CollectObservations(VectorSensor sensor) {
         sensor.AddObservation(this.transform.localPosition);//weet waar agent is
         sensor.AddObservation(Target.transform.localPosition);//weet waar target is
         // obstacles werken met rays
     }
     
-    private float speedMultiplier = 0.1f;
-    private float rotationmultiplier = 1f;
-    private float jumpForce = 0.1f;
-
-    private bool middebereikt = false;
-    private bool bijnaDaar = false;
-    public Rigidbody rb;
+   
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //beweging
