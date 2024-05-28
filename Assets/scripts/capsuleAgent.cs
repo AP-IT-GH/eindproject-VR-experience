@@ -8,12 +8,18 @@ using Unity.MLAgents.Actuators;
 public class capsuleAgent : Agent
 {
     public Transform Target;
-    public override void OnEpisodeBegin() {
-        
+    private Vector3 initPosition;
+    private Quaternion initRotation;
+    private void Start()
+    {
+        initPosition = gameObject.transform.position;
+        initRotation = gameObject.transform.rotation;
+    }
+    public override void OnEpisodeBegin() 
+    {
       //zet de agent op zijn plaats.
-
-            this.transform.localPosition = new Vector3(16f, 0.8f, 9); this.transform.localRotation = Quaternion.identity;
-        
+      this.transform.localPosition = initPosition; 
+      this.transform.localRotation = initRotation;
     }
     public override void CollectObservations(VectorSensor sensor) {
         sensor.AddObservation(this.transform.localPosition);//weet waar agent is
@@ -36,10 +42,7 @@ public class capsuleAgent : Agent
         //springen
         if (jumpAction > 0.5f && transform.position.y <= 0.5)
         {
-            
-
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            
         }
         //punten
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
@@ -55,8 +58,6 @@ public class capsuleAgent : Agent
             SetReward(-0.5f);
             EndEpisode();
         }
-        
-
     }
 
     //code zorgt dat de agents bewegingen getest kunnen worden.
@@ -65,6 +66,6 @@ public class capsuleAgent : Agent
         var continuousActionsOut = actionsOut.ContinuousActions;
         continuousActionsOut[0] = Input.GetAxis("Horizontal");
         continuousActionsOut[1] = Input.GetAxis("Vertical");
-        continuousActionsOut[2] = Input.GetKey(KeyCode.RightShift) ? 1f : 0f; ;
+        continuousActionsOut[2] = Input.GetKey(KeyCode.RightShift) ? 1f : 0f;
     }
 }

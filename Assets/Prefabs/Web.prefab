@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8078981857906118238}
   - component: {fileID: 8462283473424520807}
   - component: {fileID: 2096163753056524782}
-  - component: {fileID: -4530294164822723094}
   - component: {fileID: 7699400680664991450}
   m_Layer: 8
   m_Name: Web
@@ -105,22 +104,8 @@ BoxCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000001, y: 25, z: 1.0000002}
-  m_Center: {x: 0.000000059604645, y: 15, z: -0.00000008940697}
---- !u!114 &-4530294164822723094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 196116204701227988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56cd822be3980224fba0d278f46aaee8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  placeRandomly: {fileID: 0}
-  spawnIndex: 0
+  m_Size: {x: 1.0000001, y: 5, z: 1.0000002}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &7699400680664991450
 Rigidbody:
   m_ObjectHideFlags: 0
