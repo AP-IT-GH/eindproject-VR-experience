@@ -20,8 +20,8 @@ public class capsuleAgent : Agent
     private Quaternion initRotation;
     private void Start()
     {
-        initPosition = gameObject.transform.position;
-        initRotation = gameObject.transform.rotation;
+        initPosition = gameObject.transform.localPosition;
+        initRotation = gameObject.transform.localRotation;
     }
     
     private float speedMultiplier = 0.1f;
