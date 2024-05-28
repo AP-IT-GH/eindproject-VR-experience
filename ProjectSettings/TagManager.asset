@@ -12,6 +12,14 @@ TagManager:
   - Web
   - Hole
   - SpawnBox
+  - SpawnPoint1
+  - SpawnPoint2
+  - SpawnPoint3
+  - SpawnPoint4
+  - SpawnPoint5
+  - SpawnPoint6
+  - SpawnPoint7
+  - SpawnPoint8
   layers:
   - Default
   - TransparentFX
