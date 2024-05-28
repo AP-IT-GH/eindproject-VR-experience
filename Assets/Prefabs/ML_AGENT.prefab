@@ -2718,6 +2718,7 @@ MonoBehaviour:
   m_DetectableTags:
   - wall
   - web
+  - hole
   m_RaysPerDirection: 6
   m_MaxRayDegrees: 70
   m_SphereCastRadius: 0.5
