@@ -4,6 +4,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using System.Collections;
+using System;
 
 
 public class capsuleAgent : Agent
@@ -56,7 +57,7 @@ public class capsuleAgent : Agent
     private void GiveAwardBasedOnDistance()
     {
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
-        float reward = ((distanceToTarget / 40) - 1) * -1;
+        float reward = (distanceToTarget / 40) * -1;
         Debug.Log("Award given for distance: " + reward);
         AddReward(reward);
     }
@@ -78,13 +79,15 @@ public class capsuleAgent : Agent
         //beweging
         Vector3 controlSignal = Vector3.zero;
 
-        controlSignal.z = actionBuffers.ContinuousActions[1];
+        controlSignal.z = Math.Abs(actionBuffers.ContinuousActions[1]);
+
         transform.Translate(controlSignal * speedMultiplier);
         transform.Rotate(0.0f, rotationmultiplier * actionBuffers.ContinuousActions[0], 0.0f);
         float jumpAction = actionBuffers.ContinuousActions[2];
         //springen
         if (jumpAction > 0.5f && transform.position.y <= 0.5)
         {
+            AddReward(-0.05f);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
         //punten
@@ -93,7 +96,7 @@ public class capsuleAgent : Agent
         // target bereikt
         if (distanceToTarget < 1.42f)
         {
-            SetReward(2.0f);
+            SetReward(1.0f);
             EndEpisode();
             Debug.Log("We made it to the target!: Reward = 2");
         }
@@ -120,8 +123,8 @@ public class capsuleAgent : Agent
     {
         if (!startWebTouch)
         {
-            AddReward(-0.5f);
-            Debug.Log("Touched web! Punishment: -0.5");
+            AddReward(-0.1f);
+            Debug.Log("Touched web! Punishment: -0.1");
         }
         if(obstacle.tag == "web")
         {

@@ -2668,7 +2668,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  TooLateTimeSec: 30
+  TooLateTimeSec: 50
   Target: {fileID: 0}
   rb: {fileID: 8878673377162984832}
   Spawner: {fileID: 0}
