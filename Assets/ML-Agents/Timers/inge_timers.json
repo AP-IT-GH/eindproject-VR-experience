@@ -1,1 +1,89 @@
-{"count":1,"self":19.3584,"total":42.731673799999996,"children":{"InitializeActuators":{"count":2,"self":0.0015309,"total":0.0015309,"children":null},"InitializeSensors":{"count":2,"self":0.0025610999999999997,"total":0.0025610999999999997,"children":null},"AgentSendState":{"count":15834,"self":0.27745529999999996,"total":0.4028829,"children":{"CollectObservations":{"count":1584,"self":0.0124531,"total":0.0124531,"children":null},"WriteActionMask":{"count":1584,"self":0.0051490999999999993,"total":0.0051490999999999993,"children":null},"RequestDecision":{"count":1584,"self":0.0355851,"total":0.1078254,"children":{"AgentInfo.ToProto":{"count":1584,"self":0.016046499999999998,"total":0.0722403,"children":{"GenerateSensorData":{"count":1584,"self":0.0431735,"total":0.056193799999999995,"children":{"RayPerceptionSensor.Perceive":{"count":1584,"self":0.0130203,"total":0.0130203,"children":null}}}}}}}}},"DecideAction":{"count":15834,"self":22.755992,"total":22.7559918,"children":null},"AgentAct":{"count":15834,"self":0.20927479999999998,"total":0.20927479999999998,"children":{"AgentInfo.ToProto":{"count":1,"self":0,"total":0,"children":{"GenerateSensorData":{"count":1,"self":0,"total":0,"children":{"RayPerceptionSensor.Perceive":{"count":1,"self":0,"total":0,"children":null}}}}}}}},"gauges":{"capsuleAgent.CumulativeReward":{"count":1,"max":1,"min":1,"runningAverage":1,"value":1,"weightedAverage":1}},"metadata":{"timer_format_version":"0.1.0","start_time_seconds":"1716906604","unity_version":"2022.3.11f1","command_line_arguments":"C:\\Program Files\\Unity\\Hub\\Editor\\2022.3.11f1\\Editor\\Unity.exe -projectpath C:\\Users\\roanh\\source\\repos\\eindproject-VR-experience -useHub -hubIPC -cloudEnvironment production -licensingIpc LicenseClient-roanh -hubSessionId a507fa45-6503-4bc3-a301-465d3d7ef854 -accessToken zlG-6E0WsDnLIH6hk2_qc_DznmvNpBOO3qzamRX4AWg008f","communication_protocol_version":"1.5.0","com.unity.ml-agents_version":"2.0.1","scene_name":"inge","end_time_seconds":"1716906647"}}
+{
+  "count": 1,
+  "self": 105.0359616,
+  "total": 105.2571021,
+  "children": {
+    "InitializeActuators": {
+      "count": 2,
+      "self": 0.0019990999999999997,
+      "total": 0.0019990999999999997,
+      "children": null
+    },
+    "InitializeSensors": {
+      "count": 2,
+      "self": 0.0020195,
+      "total": 0.0020195,
+      "children": null
+    },
+    "AgentSendState": {
+      "count": 4975,
+      "self": 0.1061828,
+      "total": 0.1121691,
+      "children": {
+        "CollectObservations": {
+          "count": 498,
+          "self": 0.0019990999999999997,
+          "total": 0.0019990999999999997,
+          "children": null
+        },
+        "WriteActionMask": {
+          "count": 498,
+          "self": 0,
+          "total": 0,
+          "children": null
+        },
+        "RequestDecision": {
+          "count": 498,
+          "self": 0.0019998,
+          "total": 0.0039872,
+          "children": {
+            "RayPerceptionSensor.Perceive": {
+              "count": 498,
+              "self": 0.0019874,
+              "total": 0.0019874,
+              "children": null
+            }
+          }
+        }
+      }
+    },
+    "DecideAction": {
+      "count": 4975,
+      "self": 0.0333943,
+      "total": 0.0333943,
+      "children": null
+    },
+    "AgentAct": {
+      "count": 4975,
+      "self": 0.0715595,
+      "total": 0.0715595,
+      "children": null
+    },
+    "RayPerceptionSensor.Perceive": {
+      "count": 1,
+      "self": 0,
+      "total": 0,
+      "children": null
+    }
+  },
+  "gauges": {
+    "capsuleAgent.CumulativeReward": {
+      "count": 1,
+      "max": 0.3,
+      "min": 0.3,
+      "runningAverage": 0.3,
+      "value": 0.3,
+      "weightedAverage": 0.3
+    }
+  },
+  "metadata": {
+    "timer_format_version": "0.1.0",
+    "start_time_seconds": "1716908208",
+    "unity_version": "2022.3.11f1",
+    "command_line_arguments": "C:\\Program Files\\Unity\\Hub\\Editor\\2022.3.11f1\\Editor\\Unity.exe -projectpath C:\\Users\\miche\\OneDrive\\Documenten\\inge\\school\\school\\ap\\vr_exp\\eindproject-VR-experience -useHub -hubIPC -cloudEnvironment production -licensingIpc LicenseClient-miche -hubSessionId be097ff5-dcd3-4f28-a134-243d67e8ff0c -accessToken P45fKnfzHXiCnk--kuGywFqJvCJZXNXaSrk6Kt_gvHI008f",
+    "communication_protocol_version": "1.5.0",
+    "com.unity.ml-agents_version": "2.0.1",
+    "scene_name": "inge",
+    "end_time_seconds": "1716908313"
+  }
+}
