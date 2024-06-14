@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1718375403",
+        "python_version": "3.9.19 (main, May  6 2024, 20:12:36) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\HBDHQ\\anaconda3\\envs\\vr\\Scripts\\mlagents-learn config/capsuleAgent.yaml --run-id=test1 --force",
+        "mlagents_version": "0.30.0",
+        "mlagents_envs_version": "0.30.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.7.1+cu110",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1718375411"
+    },
+    "total": 7.9498048,
+    "count": 1,
+    "self": 0.006497999999999671,
+    "children": {
+        "run_training.setup": {
+            "total": 0.13568539999999985,
+            "count": 1,
+            "self": 0.13568539999999985
+        },
+        "TrainerController.start_learning": {
+            "total": 7.8076214,
+            "count": 1,
+            "self": 0.00018350000000033617,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 7.807422799999999,
+                    "count": 1,
+                    "self": 7.807422799999999
+                },
+                "TrainerController._save_models": {
+                    "total": 1.5100000000600744e-05,
+                    "count": 1,
+                    "self": 1.5100000000600744e-05
+                }
+            }
+        }
+    }
+}
