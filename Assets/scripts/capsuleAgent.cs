@@ -9,6 +9,9 @@ using System;
 
 public class capsuleAgent : Agent
 {
+    [Header("BarrierCheckpoint")]
+    private int checkpoint = 0;
+
     [Header("ML AGENT SETTINGS")]
     public float TooLateTimeSec = 30;
 
@@ -48,6 +51,8 @@ public class capsuleAgent : Agent
         rotationmultiplier = 2f;
         jumpForce = 10f;
         countdown = StartCoroutine(StartCountdown(TooLateTimeSec));
+
+        checkpoint = 0;
     }
     public override void CollectObservations(VectorSensor sensor) {
         sensor.AddObservation(this.transform.localPosition);//weet waar agent is
@@ -56,10 +61,10 @@ public class capsuleAgent : Agent
     }
     private void GiveAwardBasedOnDistance()
     {
-        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
-        float reward = (distanceToTarget / 40) * -1;
-        Debug.Log("Award given for distance: " + reward);
-        AddReward(reward);
+        //float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
+        //float reward = (distanceToTarget / 40) * -1;
+        //Debug.Log("Award given for distance: " + reward);
+        //AddReward(reward);
     }
     float currCountdownValue;
     public IEnumerator StartCountdown(float countdownValue = 50)
@@ -113,20 +118,65 @@ public class capsuleAgent : Agent
     {
         if (collision.gameObject.tag == "hole")
         {
+            SetReward(-0.5f);
             gameObject.GetComponent<Collider>().enabled = false;
             speedMultiplier = 0f;
             rotationmultiplier = 0f;
             jumpForce = -0.1f;
+
+            string obstacleName = collision.gameObject.name;
+            if (char.IsDigit(obstacleName[0]))
+            {
+                if (int.Parse(obstacleName[0].ToString()) > checkpoint)
+                {
+                    Debug.Log("Advanced checkpoint!");
+                    SetReward(0.3f);
+                }
+                else
+                {
+                    Debug.Log("Went back a checkpoint!");
+                    SetReward(-0.5f);
+                }
+
+                checkpoint = int.Parse(obstacleName[0].ToString());
+                Debug.Log("Checkpoint updated to: " + checkpoint);
+            }
         }
+
+        
     }
     private void OnTriggerEnter(Collider obstacle)
     {
-        if (!startWebTouch)
+        //Hier moet logica komen 
+
+        // Controleer de naam van de obstacle en update de checkpoint variabele
+        if (obstacle.tag == "goodrewardbox" || obstacle.tag == "web")
+        {
+            string obstacleName = obstacle.name;
+            if (char.IsDigit(obstacleName[0]))
+            {
+                if(int.Parse(obstacleName[0].ToString()) > checkpoint)
+                {
+                    Debug.Log("Advanced checkpoint!");
+                    SetReward(0.5f);
+                }
+                else
+                {
+                    Debug.Log("Went back a checkpoint!");
+                    SetReward(-0.5f);
+                }
+                checkpoint = int.Parse(obstacleName[0].ToString());
+                Debug.Log("Checkpoint updated to: " + checkpoint);
+            }
+        }
+
+        
+        else if(!startWebTouch)
         {
             AddReward(-0.1f);
             Debug.Log("Touched web! Punishment: -0.1");
         }
-        if(obstacle.tag == "web")
+        else if (obstacle.tag == "web")
         {
             startWebTouch = true;
             speedMultiplier = 0.01f;
