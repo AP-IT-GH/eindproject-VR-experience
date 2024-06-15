@@ -96,12 +96,12 @@ public class capsuleAgent : Agent
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
         //punten
-        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
+        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.transform.localPosition);
 
         // target bereikt
         if (distanceToTarget < 1.42f)
         {
-            SetReward(1.0f);
+            SetReward(2.0f);
             EndEpisode();
             Debug.Log("We made it to the target!: Reward = 2");
         }

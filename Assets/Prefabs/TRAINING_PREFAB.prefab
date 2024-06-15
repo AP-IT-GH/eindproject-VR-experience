@@ -1391,6 +1391,10 @@ PrefabInstance:
       propertyPath: m_DetectableTags.Array.data[4]
       value: goodrewardbox
       objectReference: {fileID: 0}
+    - target: {fileID: 2275258994230768949, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: m_BrainParameters.VectorObservationSize
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
       propertyPath: Target
       value: 
