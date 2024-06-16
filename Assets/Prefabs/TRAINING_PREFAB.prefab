@@ -1584,9 +1584,45 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6500411416803920332}
     - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: TargetAward
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
       propertyPath: TargetStart
       value: 
       objectReference: {fileID: 5498031227219974750}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: StepPunishment
+      value: 0.0025
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: CheckpointAward
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: StartCheckpoint
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: EndWhenGoingBack
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: PunishmentGoingBack
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: PunishmentWallTouch
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: ObstacleTouchedPunishmentWeb
+      value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613351879407458043, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
+      propertyPath: ObstacleTouchedPunishmentHole
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7947000436064305830, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
       propertyPath: m_Name
       value: ML_AGENT

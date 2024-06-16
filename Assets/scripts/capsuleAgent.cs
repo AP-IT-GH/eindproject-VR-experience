@@ -266,7 +266,7 @@ public class capsuleAgent : Agent
                 AddReward(-ObstacleTouchedPunishmentWeb);
                 touched.HasBeenTouched = true;
             }
-            speedMultiplier = 0.01f;
+            //speedMultiplier = 0.01f;
         }
     }
     private void OnTriggerExit(Collider obstacle)
