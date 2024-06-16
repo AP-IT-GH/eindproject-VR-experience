@@ -78,8 +78,11 @@ public class capsuleAgent : Agent
     private float speedMultiplier = 0.1f;
     private float rotationmultiplier;
     private float jumpForce = 5f;
-
+    private bool episodeEnded = false;
+    private TouchObjectType currentlyTouching = TouchObjectType.NOTHING;
     public override void OnEpisodeBegin() {
+        currentlyTouching = TouchObjectType.NOTHING;
+
         if (TargetEnd != null && TargetStart != null)
             Target.localPosition = new Vector3(
                 targetInitPosition.x, 
@@ -111,6 +114,7 @@ public class capsuleAgent : Agent
         speedMultiplier = 0.1f;
         rotationmultiplier = 2f;
         jumpForce = 5f;
+        episodeEnded = false;
     }
     public override void CollectObservations(VectorSensor sensor) {
         //Distance between target and agent.
@@ -122,6 +126,9 @@ public class capsuleAgent : Agent
 
         //The current checkpoint we are at
         sensor.AddObservation(checkpoint);
+
+        //What we are touching currently
+        sensor.AddObservation((int) currentlyTouching);
         // obstacles werken met rays
     }
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -204,6 +211,8 @@ public class capsuleAgent : Agent
     }
     private void CalculateRewardsAndPunishments()
     {
+        episodeEnded = true;
+
         if (Verbose)
             Debug.Log("Checkpoint " + checkpoint + " reached! Reward: " + checkpoint * CheckpointAward);
 
@@ -216,12 +225,16 @@ public class capsuleAgent : Agent
     {
         if (collision.gameObject.tag == "hole")
         {
+            currentlyTouching = TouchObjectType.HOLE;
+
             gameObject.GetComponent<Collider>().enabled = false;
             speedMultiplier = 0f;
             rotationmultiplier = 0f;
             jumpForce = -0.1f;
         } else if (collision.gameObject.tag == "wall")
         {
+            currentlyTouching = TouchObjectType.WALL;
+
             Touchable touched = collision.gameObject.GetComponent<Touchable>();
 
             if (!touched.HasBeenTouched)
@@ -245,6 +258,16 @@ public class capsuleAgent : Agent
     {
         if (obstacle.tag == "goodrewardbox" || obstacle.tag == "web")
         {
+            switch (obstacle.tag)
+            {
+                case "goodrewardbox":
+                    currentlyTouching = TouchObjectType.CHECKPOINT;
+                    break;
+                case "web":
+                    currentlyTouching = TouchObjectType.WEB;
+                    break;
+            }
+
             Checkpoint checkpointObstacle = obstacle.gameObject.GetComponent<Checkpoint>();
 
             if (checkpoint > checkpointObstacle.CheckpointNumber && EndWhenGoingBack)
@@ -257,6 +280,7 @@ public class capsuleAgent : Agent
                 CalculateRewardsAndPunishments();
                 EndEpisode();
             }
+
             checkpoint = checkpointObstacle.CheckpointNumber;
         }
         
@@ -272,11 +296,18 @@ public class capsuleAgent : Agent
                 AddReward(-ObstacleTouchedPunishmentWeb);
                 touched.HasBeenTouched = true;
             }
-            //speedMultiplier = 0.01f;
+            if (!episodeEnded)
+                speedMultiplier = 0.01f;
         }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        currentlyTouching = TouchObjectType.NOTHING;
     }
     private void OnTriggerExit(Collider obstacle)
     {
+        currentlyTouching = TouchObjectType.NOTHING;
+
         if (obstacle.tag == "web")
         {
             speedMultiplier = 0.1f;
@@ -292,4 +323,13 @@ public class capsuleAgent : Agent
         discreteActions[ (int)discreteType.ROTATION ] = Convert.ToInt32(Input.GetAxis("Horizontal")) + 1;
         discreteActions[ (int)discreteType.MOVEMENT ] = Convert.ToInt32(Input.GetAxis("Vertical"));
     }
+}
+
+public enum TouchObjectType
+{
+    NOTHING,
+    WALL,
+    CHECKPOINT,
+    WEB,
+    HOLE,
 }

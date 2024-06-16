@@ -2635,7 +2635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 8
+    VectorObservationSize: 9
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -2667,14 +2667,14 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000
+  MaxStep: 3000
   Verbose: 1
   StartCheckpoint: 0
   EndWhenGoingBack: 1
   EndWhenTouchingWall: 0
   CheckpointAward: 3
   TargetAward: 50
-  PunishmentWallTouch: 1
+  PunishmentWallTouch: 0.15
   PunishmentGoingBack: 1
   ObstacleTouchedPunishmentWeb: 0.5
   ObstacleTouchedPunishmentHole: 1
