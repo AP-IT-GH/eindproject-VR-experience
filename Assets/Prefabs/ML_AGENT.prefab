@@ -2529,7 +2529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7947000436064305830}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 3.8695502, y: -17.483044, z: -1.669927}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2635,12 +2635,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 6
+    VectorObservationSize: 8
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 3
-      BranchSizes: 01000000
-    VectorActionSize: 
+      m_NumContinuousActions: 0
+      BranchSizes: 020000000300000002000000
+    VectorActionSize: 020000000300000002000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -2667,8 +2667,21 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  TooLateTimeSec: 50
+  MaxStep: 5000
+  Verbose: 1
+  StartCheckpoint: 0
+  EndWhenGoingBack: 1
+  EndWhenTouchingWall: 0
+  CheckpointAward: 3
+  TargetAward: 50
+  PunishmentWallTouch: 1
+  PunishmentGoingBack: 1
+  ObstacleTouchedPunishmentWeb: 0.5
+  ObstacleTouchedPunishmentHole: 1
+  JumpingPunishment: 0.05
+  StepPunishment: 0.0005
+  TargetStart: {fileID: 0}
+  TargetEnd: {fileID: 0}
   Target: {fileID: 0}
   rb: {fileID: 8878673377162984832}
   Spawner: {fileID: 0}
@@ -2719,18 +2732,19 @@ MonoBehaviour:
   - wall
   - web
   - hole
-  m_RaysPerDirection: 6
+  - target
+  m_RaysPerDirection: 2
   m_MaxRayDegrees: 90
-  m_SphereCastRadius: 0.5
-  m_RayLength: 32
+  m_SphereCastRadius: 0.1
+  m_RayLength: 26
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
-  m_StartVerticalOffset: 1
-  m_EndVerticalOffset: -3
+  m_StartVerticalOffset: 1.69
+  m_EndVerticalOffset: -10
 --- !u!1 &7955172738507604113
 GameObject:
   m_ObjectHideFlags: 0
