@@ -90,6 +90,12 @@ public class capsuleAgent : Agent
                     )
                 );
 
+        Touchable[] touchables = gameObject.transform.parent.GetComponentsInChildren<Touchable>();
+        foreach (Touchable touchable in touchables)
+        {
+            touchable.HasBeenTouched = false;
+        }
+
         checkpoint = StartCheckpoint;
 
         //zet de agent op zijn plaats en collider aan.
@@ -241,7 +247,7 @@ public class capsuleAgent : Agent
         {
             Checkpoint checkpointObstacle = obstacle.gameObject.GetComponent<Checkpoint>();
 
-            if (checkpoint >= checkpointObstacle.CheckpointNumber && EndWhenGoingBack)
+            if (checkpoint > checkpointObstacle.CheckpointNumber && EndWhenGoingBack)
             {
                 if (Verbose)
                     Debug.Log("We went back! Punishment: " + (-PunishmentGoingBack));
