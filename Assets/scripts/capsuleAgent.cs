@@ -269,12 +269,9 @@ public class capsuleAgent : Agent
             }
 
             Checkpoint checkpointObstacle = obstacle.gameObject.GetComponent<Checkpoint>();
-            Touchable touch = obstacle.gameObject.GetComponent<Touchable>();
 
-            if (checkpoint >= checkpointObstacle.CheckpointNumber && EndWhenGoingBack && !touch.HasBeenTouched)
+            if (checkpoint > checkpointObstacle.CheckpointNumber && EndWhenGoingBack)
             {
-                touch.HasBeenTouched = true;
-
                 if (Verbose)
                     Debug.Log("We went back! Punishment: " + (-PunishmentGoingBack));
 
@@ -283,6 +280,7 @@ public class capsuleAgent : Agent
                 CalculateRewardsAndPunishments();
                 EndEpisode();
             }
+
             checkpoint = checkpointObstacle.CheckpointNumber;
         }
         
