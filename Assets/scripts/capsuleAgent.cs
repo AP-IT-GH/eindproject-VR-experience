@@ -20,6 +20,9 @@ public class capsuleAgent : Agent
 
     [Header("ML AGENT SETTINGS")]
 
+    [Tooltip("Destroys the agent when the episode ends.")]
+    public bool DestroyOnEnd = false;
+
     [Tooltip("The checkpoint the ML agent starts at.")]
     public int StartCheckpoint;
 
@@ -60,6 +63,7 @@ public class capsuleAgent : Agent
     [Header("OBJECTS")]
     public Transform TargetStart;
     public Transform TargetEnd;
+    public MLAgentSpawner AgentGameSpawner;
 
     public Transform Target;
     public Rigidbody rb;
@@ -101,7 +105,8 @@ public class capsuleAgent : Agent
         checkpoint = StartCheckpoint;
 
         //zet de agent op zijn plaats en collider aan.
-        Spawner.SpawnRandomizedObjects();
+        if (Spawner != null)
+            Spawner.SpawnRandomizedObjects();
 
         gameObject.GetComponent<Collider>().enabled = true;
 
@@ -155,6 +160,8 @@ public class capsuleAgent : Agent
             SetReward(TargetAward);
             if (Verbose)
                 Debug.Log("We made it to the target!: " + TargetAward);
+
+            AgentGameSpawner.PlayerDied();
 
             CalculateRewardsAndPunishments();
             EndEpisode();
@@ -256,6 +263,9 @@ public class capsuleAgent : Agent
 
         AddReward(checkpoint * CheckpointAward);
         AddReward(StepCount * -StepPunishment);
+
+        if (DestroyOnEnd)
+            Destroy(gameObject);
     }
 
     private bool webTouching = false;
