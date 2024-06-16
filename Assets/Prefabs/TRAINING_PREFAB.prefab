@@ -1363,7 +1363,7 @@ GameObject:
   - component: {fileID: 7870458976224022132}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1556,10 +1556,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 1950260780413264910}
     m_Modifications:
     - target: {fileID: 1834887788530245877, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
-      propertyPath: m_RayLength
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 1834887788530245877, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
       propertyPath: m_DetectableTags.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -1589,7 +1585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9006888197690038378, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: 2.72
       objectReference: {fileID: 0}
     - target: {fileID: 9006888197690038378, guid: 7cda897cef61e1f48ad0665df0a94e80, type: 3}
       propertyPath: m_LocalPosition.y

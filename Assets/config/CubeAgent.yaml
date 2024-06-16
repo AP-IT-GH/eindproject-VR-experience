@@ -5,7 +5,7 @@ behaviors:
       batch_size: 128
       buffer_size: 2048
       learning_rate: 0.0003
-      beta: 0.005
+      beta: 0.01
       epsilon: 0.2
       lambd: 0.9
       num_epoch: 5
@@ -13,10 +13,6 @@ behaviors:
       beta_schedule: constant
       epsilon_schedule: linear
     network_settings:
-      memory:
-        use_recurrent: true
-        sequence_length: 64
-        memory_size: 256
       normalize: false
       hidden_units: 128
       num_layers: 2

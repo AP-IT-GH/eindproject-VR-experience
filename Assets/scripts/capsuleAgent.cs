@@ -119,11 +119,11 @@ public class capsuleAgent : Agent
     }
     public override void CollectObservations(VectorSensor sensor) {
         //Distance between target and agent.
-        sensor.AddObservation(Vector3.Distance(Target.transform.position, this.transform.position));
+        sensor.AddObservation(Vector3.Distance(Target.transform.localPosition, this.transform.localPosition));
 
         //Position of target and itself
-        sensor.AddObservation(Target.transform.position);
-        sensor.AddObservation(this.transform.position);
+        sensor.AddObservation(Target.transform.localPosition);
+        sensor.AddObservation(this.transform.localPosition);
 
         //The current checkpoint we are at
         sensor.AddObservation(checkpoint);
@@ -309,15 +309,18 @@ public class capsuleAgent : Agent
 
             Checkpoint checkpointObstacle = obstacle.gameObject.GetComponent<Checkpoint>();
 
-            if (checkpoint > checkpointObstacle.CheckpointNumber && EndWhenGoingBack)
+            if (checkpoint > checkpointObstacle.CheckpointNumber)
             {
                 if (Verbose)
                     Debug.Log("We went back! Punishment: " + (-PunishmentGoingBack));
 
                 AddReward(-PunishmentGoingBack);
 
-                CalculateRewardsAndPunishments();
-                EndEpisode();
+                if (EndWhenGoingBack)
+                {
+                    CalculateRewardsAndPunishments();
+                    EndEpisode();
+                }
             }
 
             checkpoint = checkpointObstacle.CheckpointNumber;
@@ -338,7 +341,9 @@ public class capsuleAgent : Agent
                 touched.HasBeenTouched = true;
             }
             speedMultiplier = 0.01f;
-        } else
+        }
+
+        if (obstacle.tag == "floor")
         {
             webTouching = false;
         }

@@ -2672,14 +2672,14 @@ MonoBehaviour:
   StartCheckpoint: 0
   EndWhenGoingBack: 1
   EndWhenTouchingWall: 0
-  CheckpointAward: 3
+  CheckpointAward: 4
   TargetAward: 50
   PunishmentWallTouch: 0.15
-  PunishmentGoingBack: 1
-  ObstacleTouchedPunishmentWeb: 0.5
+  PunishmentGoingBack: 3
+  ObstacleTouchedPunishmentWeb: 1
   ObstacleTouchedPunishmentHole: 3
   JumpingPunishment: 0.05
-  StepPunishment: 0.0005
+  StepPunishment: 0.00005
   TargetStart: {fileID: 0}
   TargetEnd: {fileID: 0}
   Target: {fileID: 0}
@@ -2736,7 +2736,7 @@ MonoBehaviour:
   m_RaysPerDirection: 2
   m_MaxRayDegrees: 90
   m_SphereCastRadius: 0.1
-  m_RayLength: 26
+  m_RayLength: 21
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291
