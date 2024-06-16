@@ -106,8 +106,22 @@ public class SimpleShoot : MonoBehaviour
     {
         if (hit.gameObject.CompareTag("Zombie"))
         {
-            Destroy(hit.gameObject);
+            Animator zombieAnimator = hit.gameObject.GetComponent<Animator>();
+            if (zombieAnimator != null)
+            {
+                zombieAnimator.SetBool("IsHit", true);
+                StartCoroutine(DestroyZombieAfterAnimation(hit.gameObject, zombieAnimator));
+            }
         }
+
+    }
+
+    private IEnumerator DestroyZombieAfterAnimation(GameObject zombie, Animator zombieAnimator)
+    {
+        
+        yield return new WaitForSeconds(1f);
+
+        Destroy(zombie);
     }
 
     //This function creates a casing at the ejection slot
