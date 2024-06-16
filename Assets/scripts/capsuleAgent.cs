@@ -5,40 +5,95 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using System.Collections;
 using System;
+using static UnityEngine.GraphicsBuffer;
+using Unity.Mathematics;
 
 
 public class capsuleAgent : Agent
 {
-    [Header("BarrierCheckpoint")]
+    // Keeps the current checkpoint number, at the end of the training we'll calculate the award based on this.
+    // (This prevents triggers causing multiple awards to be given)
     private int checkpoint = 0;
 
+    [Tooltip("To enable or disable logging")]
+    public bool Verbose = true;
+
     [Header("ML AGENT SETTINGS")]
-    public float TooLateTimeSec = 30;
+
+    [Tooltip("The checkpoint the ML agent starts at.")]
+    public int StartCheckpoint;
+
+    [Tooltip("Ends the episode when the ML agent went back a checkpoint.")]
+    public bool EndWhenGoingBack = true;
+
+    [Tooltip("Ends the episode when the ML agent touches a wall.")]
+    public bool EndWhenTouchingWall = true;
+
+    [Header("AWARDS")]
+    
+    [Tooltip("The award given for passing a singular checkpoint. (stacks)")]
+    public float CheckpointAward = 0.25F;
+
+    [Tooltip("The punishment given for falling into a hole.")]
+    public float TargetAward = 1F;
+
+    [Header("PUNISHMENTS")]
+
+    [Tooltip("The punishment for touching a wall.")]
+    public float PunishmentWallTouch = 2;
+
+    [Tooltip("The punishment for going back (when enabled).")]
+    public float PunishmentGoingBack = 2;
+
+    [Tooltip("The punishment given for touching a web.")]
+    public float ObstacleTouchedPunishmentWeb = 0.5F;
+
+    [Tooltip("The punishment given for falling into a hole.")]
+    public float ObstacleTouchedPunishmentHole = 1F;
+
+    [Tooltip("The jumping punishment.")]
+    public float JumpingPunishment = 0.05F;
+
+    [Tooltip("The punishment per step taken.")]
+    public float StepPunishment = 0.00005F;
 
     [Header("OBJECTS")]
+    public Transform TargetStart;
+    public Transform TargetEnd;
+
     public Transform Target;
     public Rigidbody rb;
     public BarrierSpawner Spawner;
 
     private Vector3 initPosition;
     private Quaternion initRotation;
+    private Vector3 targetInitPosition;
     private void Start()
     {
+        targetInitPosition = Target.localPosition;
         initPosition = gameObject.transform.localPosition;
         initRotation = gameObject.transform.localRotation;
     }
     
     private float speedMultiplier = 0.1f;
     private float rotationmultiplier;
-    private float jumpForce = 10f;
+    private float jumpForce = 5f;
 
-    private Coroutine countdown;
     public override void OnEpisodeBegin() {
+        if (TargetEnd != null && TargetStart != null)
+            Target.localPosition = new Vector3(
+                targetInitPosition.x, 
+                targetInitPosition.y, 
+                UnityEngine.Random.Range(
+                    TargetStart.localPosition.z,
+                    TargetEnd.localPosition.z
+                    )
+                );
+
+        checkpoint = StartCheckpoint;
 
         //zet de agent op zijn plaats en collider aan.
         Spawner.SpawnRandomizedObjects();
-        if (countdown != null)
-            StopCoroutine(countdown);
 
         gameObject.GetComponent<Collider>().enabled = true;
 
@@ -49,136 +104,168 @@ public class capsuleAgent : Agent
 
         speedMultiplier = 0.1f;
         rotationmultiplier = 2f;
-        jumpForce = 10f;
-        countdown = StartCoroutine(StartCountdown(TooLateTimeSec));
-
-        checkpoint = 0;
+        jumpForce = 5f;
     }
     public override void CollectObservations(VectorSensor sensor) {
-        sensor.AddObservation(this.transform.localPosition);//weet waar agent is
-        sensor.AddObservation(Target.transform.localPosition);//weet waar target is
+        //Distance between target and agent.
+        sensor.AddObservation(Vector3.Distance(Target.transform.position, this.transform.position));
+
+        //Position of target and itself
+        sensor.AddObservation(Target.transform.position);
+        sensor.AddObservation(this.transform.position);
+
+        //The current checkpoint we are at
+        sensor.AddObservation(checkpoint);
         // obstacles werken met rays
-    }
-    private void GiveAwardBasedOnDistance()
-    {
-        //float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
-        //float reward = (distanceToTarget / 40) * -1;
-        //Debug.Log("Award given for distance: " + reward);
-        //AddReward(reward);
-    }
-    float currCountdownValue;
-    public IEnumerator StartCountdown(float countdownValue = 50)
-    {
-        currCountdownValue = countdownValue;
-        while (currCountdownValue > 0)
-        {
-            yield return new WaitForSeconds(1.0f);
-            currCountdownValue--;
-        }
-        Debug.Log("Too late!");
-        GiveAwardBasedOnDistance();
-        EndEpisode();
     }
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        //beweging
-        Vector3 controlSignal = Vector3.zero;
+        transform.Translate(discreteActionsToMovementVector(actionBuffers.DiscreteActions) * speedMultiplier);
+        transform.Rotate(discreteActionsToRotationVector(actionBuffers.DiscreteActions) * rotationmultiplier);
 
-        controlSignal.z = Math.Abs(actionBuffers.ContinuousActions[1]);
+        int jumpAction = actionBuffers.DiscreteActions[(int)discreteType.JUMP];
 
-        transform.Translate(controlSignal * speedMultiplier);
-        transform.Rotate(0.0f, rotationmultiplier * actionBuffers.ContinuousActions[0], 0.0f);
-        float jumpAction = actionBuffers.ContinuousActions[2];
-        //springen
-        if (jumpAction > 0.5f && transform.position.y <= 0.5)
+        if (jumpAction == 1 && transform.position.y <= 0.5)
         {
-            AddReward(-0.05f);
+            AddReward(-JumpingPunishment);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
-        //punten
+
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
 
-        // target bereikt
+        // Reached target.
         if (distanceToTarget < 1.42f)
         {
-            SetReward(1.0f);
+            SetReward(TargetAward);
+            if (Verbose)
+                Debug.Log("We made it to the target!: " + TargetAward);
+
+            CalculateRewardsAndPunishments();;
             EndEpisode();
-            Debug.Log("We made it to the target!: Reward = 2");
         }
+
+        // Fell through hole.
         if (transform.position.y < -5)
         {
-            AddReward(-1f);
-            GiveAwardBasedOnDistance();
-            Debug.Log("Fell through a hole! Punishment: -1");
+            AddReward(-ObstacleTouchedPunishmentHole);
+
+            if (Verbose)
+                Debug.Log("Fell through a hole! Punishment: " + (-ObstacleTouchedPunishmentHole));
+
+            CalculateRewardsAndPunishments();
+            EndEpisode();
+        }
+
+        if (this.MaxStep <= this.StepCount)
+        {
+            if (Verbose)
+                Debug.Log("Max steps reached!");
+
+            CalculateRewardsAndPunishments();
             EndEpisode();
         }
     }
+    /*
+     (Values start from 0)
+
+     MOVEMENT (2 STATES): FORWARDS, NO ACTION
+     ROTATION (3 STATES): LEFT, NO ACTION, RIGHT
+     JUMP (2 STATES): JUMP, NO ACTION
+     */
+    private enum discreteType
+    {
+        MOVEMENT,
+        ROTATION,
+        JUMP
+    }
+    private Vector3 discreteActionsToMovementVector(ActionSegment<int> discreteActions)
+    {
+        Vector3 movement = new Vector3(
+            0, 
+            0,
+            discreteActions[(int)discreteType.MOVEMENT] * 1
+         );
+        return movement;
+    }
+    private Vector3 discreteActionsToRotationVector(ActionSegment<int> discreteActions)
+    {
+        Vector3 rotation = new Vector3(
+            0,
+            discreteActions[(int)discreteType.ROTATION]-1,
+            0
+        );
+        return rotation;
+    }
+    private void CalculateRewardsAndPunishments()
+    {
+        if (Verbose)
+            Debug.Log("Checkpoint " + checkpoint + " reached! Reward: " + checkpoint * CheckpointAward);
+
+        AddReward(checkpoint * CheckpointAward);
+        AddReward(StepCount * -StepPunishment);
+    }
+
     private bool startWebTouch = false;
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "hole")
         {
-            SetReward(-0.5f);
             gameObject.GetComponent<Collider>().enabled = false;
             speedMultiplier = 0f;
             rotationmultiplier = 0f;
             jumpForce = -0.1f;
+        } else if (collision.gameObject.tag == "wall")
+        {
+            Touchable touched = collision.gameObject.GetComponent<Touchable>();
 
-            string obstacleName = collision.gameObject.name;
-            if (char.IsDigit(obstacleName[0]))
+            if (!touched.HasBeenTouched)
             {
-                if (int.Parse(obstacleName[0].ToString()) > checkpoint)
-                {
-                    Debug.Log("Advanced checkpoint!");
-                    SetReward(0.3f);
-                }
-                else
-                {
-                    Debug.Log("Went back a checkpoint!");
-                    SetReward(-0.5f);
-                }
+                touched.HasBeenTouched = true;
 
-                checkpoint = int.Parse(obstacleName[0].ToString());
-                Debug.Log("Checkpoint updated to: " + checkpoint);
+                if (Verbose)
+                    Debug.Log("Touched a wall!");
+
+                AddReward(-PunishmentWallTouch);
+
+                if (EndWhenTouchingWall)
+                {
+                    CalculateRewardsAndPunishments();
+                    EndEpisode();
+                }
             }
         }
-
-        
     }
     private void OnTriggerEnter(Collider obstacle)
     {
-        //Hier moet logica komen 
-
-        // Controleer de naam van de obstacle en update de checkpoint variabele
         if (obstacle.tag == "goodrewardbox" || obstacle.tag == "web")
         {
-            string obstacleName = obstacle.name;
-            if (char.IsDigit(obstacleName[0]))
-            {
-                if(int.Parse(obstacleName[0].ToString()) > checkpoint)
-                {
-                    Debug.Log("Advanced checkpoint!");
-                    SetReward(0.5f);
-                }
-                else
-                {
-                    Debug.Log("Went back a checkpoint!");
-                    SetReward(-0.5f);
-                }
-                checkpoint = int.Parse(obstacleName[0].ToString());
-                Debug.Log("Checkpoint updated to: " + checkpoint);
-            }
-        }
+            Checkpoint checkpointObstacle = obstacle.gameObject.GetComponent<Checkpoint>();
 
-        
-        else if(!startWebTouch)
-        {
-            AddReward(-0.1f);
-            Debug.Log("Touched web! Punishment: -0.1");
+            if (checkpoint >= checkpointObstacle.CheckpointNumber && EndWhenGoingBack)
+            {
+                if (Verbose)
+                    Debug.Log("We went back! Punishment: " + (-PunishmentGoingBack));
+
+                AddReward(-PunishmentGoingBack);
+
+                CalculateRewardsAndPunishments();
+                EndEpisode();
+            }
+            checkpoint = checkpointObstacle.CheckpointNumber;
         }
-        else if (obstacle.tag == "web")
+        
+        if (obstacle.tag == "web")
         {
-            startWebTouch = true;
+            Touchable touched = obstacle.gameObject.GetComponent<Touchable>();
+
+            if (!touched.HasBeenTouched)
+            {
+                if (Verbose)
+                    Debug.Log("We touched a web! " + (-ObstacleTouchedPunishmentWeb));
+
+                AddReward(-ObstacleTouchedPunishmentWeb);
+                touched.HasBeenTouched = true;
+            }
             speedMultiplier = 0.01f;
         }
     }
@@ -186,16 +273,17 @@ public class capsuleAgent : Agent
     {
         if (obstacle.tag == "web")
         {
-            startWebTouch = false;
             speedMultiplier = 0.1f;
         }
     }
     //code zorgt dat de agents bewegingen getest kunnen worden.
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        var continuousActionsOut = actionsOut.ContinuousActions;
-        continuousActionsOut[0] = Input.GetAxis("Horizontal");
-        continuousActionsOut[1] = Input.GetAxis("Vertical");
-        continuousActionsOut[2] = Input.GetKey(KeyCode.RightShift) ? 1f : 0f;
+        var discreteActions = actionsOut.DiscreteActions;
+
+        discreteActions[(int)discreteType.JUMP] = Convert.ToInt32(Input.GetKey(KeyCode.RightShift));
+
+        discreteActions[ (int)discreteType.ROTATION ] = Convert.ToInt32(Input.GetAxis("Horizontal")) + 1;
+        discreteActions[ (int)discreteType.MOVEMENT ] = Convert.ToInt32(Input.GetAxis("Vertical"));
     }
 }

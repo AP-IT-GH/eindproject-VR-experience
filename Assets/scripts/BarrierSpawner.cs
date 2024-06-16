@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BarrierSpawner : MonoBehaviour
 {
+    public GameObject CheckpointBox;
     // Array om de prefabs op te slaan die gespawned kunnen worden
     public GameObject[] prefabs;
 
@@ -25,16 +27,17 @@ public class BarrierSpawner : MonoBehaviour
             Transform spawnLocation;
             do
             {
-                childIndex = Random.Range(0, barrier.childCount);
+                childIndex = UnityEngine.Random.Range(0, barrier.childCount);
                 spawnLocation = barrier.GetChild(childIndex);
             } while (spawnLocation.name == "SpawnedObjects");
 
             // Spawn een random prefab op de eerste locatie
-            int prefabIndex = Random.Range(0, prefabs.Length - 1);
+            int prefabIndex = UnityEngine.Random.Range(0, prefabs.Length);
             GameObject selectedPrefab = prefabs[prefabIndex];
             GameObject prefab = Instantiate(selectedPrefab, new Vector3(spawnLocation.position.x, 0.02f, spawnLocation.position.z), Quaternion.identity);
             prefab.transform.parent = spawnedObjectsFolder;
             prefab.name = barrier.name[7] + selectedPrefab.name;  // Set the name (Barrier1 -> 1PrefabName)
+            prefab.GetComponent<Checkpoint>().CheckpointNumber = Convert.ToInt32(barrier.name.Replace("Barrier", ""));
 
             // Bepaal de andere spawnlocatie
             Transform otherSpawnLocation = null;
@@ -47,11 +50,10 @@ public class BarrierSpawner : MonoBehaviour
                 }
             }
 
-            // Spawn de laatste prefab op de andere locatie
-            GameObject lastPrefab = prefabs[prefabs.Length - 1];
-            GameObject lastPrefabInstance = Instantiate(lastPrefab, new Vector3(otherSpawnLocation.position.x, 0.02f, otherSpawnLocation.position.z), Quaternion.identity);
+            // Spawn the checkpoint box on the other location.
+            GameObject lastPrefabInstance = Instantiate(CheckpointBox, new Vector3(otherSpawnLocation.position.x, 0.02f, otherSpawnLocation.position.z), Quaternion.identity);
             lastPrefabInstance.transform.parent = spawnedObjectsFolder;
-            lastPrefabInstance.name = barrier.name[7] + lastPrefab.name;  // Set the name (Barrier1 -> 1PrefabName2) 
+            lastPrefabInstance.GetComponent<Checkpoint>().CheckpointNumber = Convert.ToInt32(barrier.name.Replace("Barrier", ""));
         }
     }
 
