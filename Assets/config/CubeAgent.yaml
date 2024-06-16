@@ -13,6 +13,10 @@ behaviors:
       beta_schedule: constant
       epsilon_schedule: linear
     network_settings:
+      memory:
+        use_recurrent: true
+        sequence_length: 64
+        memory_size: 256
       normalize: false
       hidden_units: 128
       num_layers: 2

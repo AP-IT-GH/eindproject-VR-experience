@@ -78,7 +78,6 @@ public class capsuleAgent : Agent
     private float speedMultiplier = 0.1f;
     private float rotationmultiplier;
     private float jumpForce = 5f;
-    private bool episodeEnded = false;
     private TouchObjectType currentlyTouching = TouchObjectType.NOTHING;
     public override void OnEpisodeBegin() {
         currentlyTouching = TouchObjectType.NOTHING;
@@ -111,10 +110,12 @@ public class capsuleAgent : Agent
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
+        //Annoying... it wont SET!!!
+        webTouching = false;
         speedMultiplier = 0.1f;
+
         rotationmultiplier = 2f;
         jumpForce = 5f;
-        episodeEnded = false;
     }
     public override void CollectObservations(VectorSensor sensor) {
         //Distance between target and agent.
@@ -133,6 +134,8 @@ public class capsuleAgent : Agent
     }
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
+        //checkRayCast();
+
         transform.Translate(discreteActionsToMovementVector(actionBuffers.DiscreteActions) * speedMultiplier);
         transform.Rotate(discreteActionsToRotationVector(actionBuffers.DiscreteActions) * rotationmultiplier);
 
@@ -153,7 +156,7 @@ public class capsuleAgent : Agent
             if (Verbose)
                 Debug.Log("We made it to the target!: " + TargetAward);
 
-            CalculateRewardsAndPunishments();;
+            CalculateRewardsAndPunishments();
             EndEpisode();
         }
 
@@ -176,6 +179,41 @@ public class capsuleAgent : Agent
 
             CalculateRewardsAndPunishments();
             EndEpisode();
+        }
+
+        //This bug is so annoying...
+        if (!webTouching)
+        {
+            speedMultiplier = 0.1f;
+        }
+    }
+    private void checkRayCast()
+    {
+        RayPerceptionSensorComponent3D m_rayPerceptionSensorComponent3D = GetComponent<RayPerceptionSensorComponent3D>();
+
+        var rayOutputs = RayPerceptionSensor.Perceive(m_rayPerceptionSensorComponent3D.GetRayPerceptionInput()).RayOutputs;
+        int lengthOfRayOutputs = rayOutputs.Length;
+
+        // Alternating Ray Order: it gives an order of
+        // (0, -delta, delta, -2delta, 2delta, ..., -ndelta, ndelta)
+        // index 0 indicates the center of raycasts
+        for (int i = 0; i < lengthOfRayOutputs; i++)
+        {
+            GameObject goHit = rayOutputs[i].HitGameObject;
+            if (goHit != null)
+            {
+                var rayDirection = rayOutputs[i].EndPositionWorld - rayOutputs[i].StartPositionWorld;
+                var scaledRayLength = rayDirection.magnitude;
+                float rayHitDistance = rayOutputs[i].HitFraction * scaledRayLength;
+
+                // Print info:
+                string dispStr = "";
+                dispStr = dispStr + "__RayPerceptionSensor - HitInfo__:\r\n";
+                dispStr = dispStr + "GameObject name: " + goHit.name + "\r\n";
+                dispStr = dispStr + "Hit distance of Ray: " + rayHitDistance + "\r\n";
+                dispStr = dispStr + "GameObject tag: " + goHit.tag + "\r\n";
+                Debug.Log(dispStr);
+            }
         }
     }
     /*
@@ -211,7 +249,7 @@ public class capsuleAgent : Agent
     }
     private void CalculateRewardsAndPunishments()
     {
-        episodeEnded = true;
+        webTouching = false;
 
         if (Verbose)
             Debug.Log("Checkpoint " + checkpoint + " reached! Reward: " + checkpoint * CheckpointAward);
@@ -220,7 +258,7 @@ public class capsuleAgent : Agent
         AddReward(StepCount * -StepPunishment);
     }
 
-    private bool startWebTouch = false;
+    private bool webTouching = false;
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "hole")
@@ -254,6 +292,7 @@ public class capsuleAgent : Agent
             }
         }
     }
+    private bool startWebTouch = false;
     private void OnTriggerEnter(Collider obstacle)
     {
         if (obstacle.tag == "goodrewardbox" || obstacle.tag == "web")
@@ -284,8 +323,10 @@ public class capsuleAgent : Agent
             checkpoint = checkpointObstacle.CheckpointNumber;
         }
         
-        if (obstacle.tag == "web")
+        if (obstacle.tag == "web" && !webTouching)
         {
+            webTouching = true;
+
             Touchable touched = obstacle.gameObject.GetComponent<Touchable>();
 
             if (!touched.HasBeenTouched)
@@ -296,8 +337,10 @@ public class capsuleAgent : Agent
                 AddReward(-ObstacleTouchedPunishmentWeb);
                 touched.HasBeenTouched = true;
             }
-            if (!episodeEnded)
-                speedMultiplier = 0.01f;
+            speedMultiplier = 0.01f;
+        } else
+        {
+            webTouching = false;
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -308,8 +351,9 @@ public class capsuleAgent : Agent
     {
         currentlyTouching = TouchObjectType.NOTHING;
 
-        if (obstacle.tag == "web")
+        if (obstacle.tag == "web" && webTouching)
         {
+            webTouching = false;
             speedMultiplier = 0.1f;
         }
     }

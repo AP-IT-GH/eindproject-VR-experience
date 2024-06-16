@@ -2677,7 +2677,7 @@ MonoBehaviour:
   PunishmentWallTouch: 0.15
   PunishmentGoingBack: 1
   ObstacleTouchedPunishmentWeb: 0.5
-  ObstacleTouchedPunishmentHole: 1
+  ObstacleTouchedPunishmentHole: 3
   JumpingPunishment: 0.05
   StepPunishment: 0.0005
   TargetStart: {fileID: 0}
