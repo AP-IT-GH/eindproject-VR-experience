@@ -204,12 +204,16 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5091572678280229326, guid: 9d84f930ce53eda4badd3240fefbaa45, type: 3}
+      propertyPath: EndWhenGoingBack
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5091572678280229326, guid: 9d84f930ce53eda4badd3240fefbaa45, type: 3}
       propertyPath: ObstacleTouchedPunishmentWeb
       value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 7030500794960805727, guid: 9d84f930ce53eda4badd3240fefbaa45, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.7
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7030500794960805727, guid: 9d84f930ce53eda4badd3240fefbaa45, type: 3}
       propertyPath: m_LocalPosition.z

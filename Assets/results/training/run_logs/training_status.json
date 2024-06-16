@@ -2,33 +2,6 @@
     "capsuleAgent": {
         "checkpoints": [
             {
-                "steps": 210067,
-                "file_path": "results\\training\\capsuleAgent\\capsuleAgent-210067.onnx",
-                "reward": 1.6685000658035278,
-                "creation_time": 1718530994.3175142,
-                "auxillary_file_paths": [
-                    "results\\training\\capsuleAgent\\capsuleAgent-210067.pt"
-                ]
-            },
-            {
-                "steps": 241647,
-                "file_path": "results\\training\\capsuleAgent\\capsuleAgent-241647.onnx",
-                "reward": 12.22684987783432,
-                "creation_time": 1718531782.4323435,
-                "auxillary_file_paths": [
-                    "results\\training\\capsuleAgent\\capsuleAgent-241647.pt"
-                ]
-            },
-            {
-                "steps": 256186,
-                "file_path": "results\\training\\capsuleAgent\\capsuleAgent-256186.onnx",
-                "reward": 10.577166517575582,
-                "creation_time": 1718532120.739261,
-                "auxillary_file_paths": [
-                    "results\\training\\capsuleAgent\\capsuleAgent-256186.pt"
-                ]
-            },
-            {
                 "steps": 351210,
                 "file_path": "results\\training\\capsuleAgent\\capsuleAgent-351210.onnx",
                 "reward": null,
@@ -45,15 +18,42 @@
                 "auxillary_file_paths": [
                     "results\\training\\capsuleAgent\\capsuleAgent-390515.pt"
                 ]
+            },
+            {
+                "steps": 415799,
+                "file_path": "results\\training\\capsuleAgent\\capsuleAgent-415799.onnx",
+                "reward": 4.840241393138623,
+                "creation_time": 1718536068.9248629,
+                "auxillary_file_paths": [
+                    "results\\training\\capsuleAgent\\capsuleAgent-415799.pt"
+                ]
+            },
+            {
+                "steps": 426796,
+                "file_path": "results\\training\\capsuleAgent\\capsuleAgent-426796.onnx",
+                "reward": 2.7739117637495783,
+                "creation_time": 1718536352.0443342,
+                "auxillary_file_paths": [
+                    "results\\training\\capsuleAgent\\capsuleAgent-426796.pt"
+                ]
+            },
+            {
+                "steps": 452262,
+                "file_path": "results\\training\\capsuleAgent\\capsuleAgent-452262.onnx",
+                "reward": 3.1162500381469727,
+                "creation_time": 1718538471.1967854,
+                "auxillary_file_paths": [
+                    "results\\training\\capsuleAgent\\capsuleAgent-452262.pt"
+                ]
             }
         ],
         "final_checkpoint": {
-            "steps": 390515,
+            "steps": 452262,
             "file_path": "results\\training\\capsuleAgent.onnx",
-            "reward": -0.4610000252723694,
-            "creation_time": 1718534906.2366273,
+            "reward": 3.1162500381469727,
+            "creation_time": 1718538471.1967854,
             "auxillary_file_paths": [
-                "results\\training\\capsuleAgent\\capsuleAgent-390515.pt"
+                "results\\training\\capsuleAgent\\capsuleAgent-452262.pt"
             ]
         }
     },
