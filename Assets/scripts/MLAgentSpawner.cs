@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MLAgentSpawner : MonoBehaviour
 {
@@ -17,12 +18,21 @@ public class MLAgentSpawner : MonoBehaviour
     [Header("The scale that the zombies grow by every wave.")]
     public float ScalePerWave;
 
+    [Header("PLAYER WIN.")]
+    public GameObject GunKit;
+    public Canvas UICanvas;
+    public Text StatusText;
+
     private int currentWave;
     private bool done = false;
     private void Update()
     {
         if (!done)
             CheckIfZombieDied();
+    }
+    public void PlayerDied()
+    {
+
     }
     public void CheckIfZombieDied()
     {
@@ -34,8 +44,15 @@ public class MLAgentSpawner : MonoBehaviour
         {
             done = true;
             Debug.Log("You win!");
+            //Update text to YOU WIN!
+            EndGame();
         }
 
+    }
+    private void EndGame()
+    {
+        Destroy(GunKit);
+        //Show win or lose UI.
     }
     private void SpawnZombies()
     {
@@ -53,6 +70,7 @@ public class MLAgentSpawner : MonoBehaviour
             capsuleAgent.Verbose = false;
             capsuleAgent.DestroyOnEnd = true;
             capsuleAgent.EndWhenGoingBack = false;
+            capsuleAgent.AgentGameSpawner = this;
         }
     }
 
