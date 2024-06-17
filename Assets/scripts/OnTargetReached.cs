@@ -7,7 +7,7 @@ public class OnTargetReached : MonoBehaviour
 {
     public float threshold = 0.02f;
     public Transform target;
-    public UnityEvent OnReached;
+    public SimpleShoot gun;
     private bool wasReached = false;
 
     private void Update()
@@ -16,8 +16,8 @@ public class OnTargetReached : MonoBehaviour
 
         if(distance < threshold && !wasReached)
         {
-            //Reached the target
-            OnReached.Invoke();
+            gun.Slide();
+
             wasReached = true;
         }
         else if(distance >= threshold)

@@ -30,6 +30,9 @@ public class SimpleShoot : MonoBehaviour
     public AudioClip reload;
     public AudioClip noAmmo;
 
+    public GameObject AmmoSpawnLocation;
+    public GameObject AmmoPrefab;
+
     public Magazine magazine;
     public XRBaseInteractor socketInteractor;
     private bool bulletInGun = false;
@@ -92,12 +95,16 @@ public class SimpleShoot : MonoBehaviour
         }
         else
         {
+            if (bulletInGun)
+                Instantiate(AmmoPrefab, AmmoSpawnLocation.transform);
+
             bulletInGun = false;
             source.PlayOneShot(noAmmo);
         }
     }
 
     //This function creates the bullet behavior
+    public bool shooting = false;
     void Shoot()
     {
         magazine.numberOfBullet--;
@@ -119,6 +126,8 @@ public class SimpleShoot : MonoBehaviour
         { return; }
 
         // Create a bullet and add force on it in direction of the barrel
+        shooting = true;
+
         GameObject bullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation);
         bullet.GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
         bullet.AddComponent<BulletHit>().gun = this;
@@ -129,8 +138,11 @@ public class SimpleShoot : MonoBehaviour
         if (hit.gameObject.CompareTag("Zombie"))
         {
             Animator zombieAnimator = hit.gameObject.GetComponent<Animator>();
+            capsuleAgent agent = hit.gameObject.GetComponent<capsuleAgent>();
+
             if (zombieAnimator != null)
             {
+                Destroy(agent);
                 zombieAnimator.SetBool("IsHit", true);
                 StartCoroutine(DestroyZombieAfterAnimation(hit.gameObject, zombieAnimator));
             }

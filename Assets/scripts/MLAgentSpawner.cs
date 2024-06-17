@@ -8,7 +8,7 @@ public class MLAgentSpawner : MonoBehaviour
 {
     public GameObject MLAgent;
     public Transform SpawnBox;
-    public Transform Target;
+    public GameObject Target;
     public BarrierSpawner Spawner;
 
     [Header("How many to spawn initially.")]
@@ -20,6 +20,7 @@ public class MLAgentSpawner : MonoBehaviour
 
     [Header("PLAYER WIN.")]
     public GameObject GunKit;
+    public GameObject Gun;
     public Canvas UICanvas;
     public Text StatusText;
 
@@ -32,7 +33,8 @@ public class MLAgentSpawner : MonoBehaviour
     }
     public void PlayerDied()
     {
-
+        Debug.Log("You lose!");
+        EndGame();
     }
     public void CheckIfZombieDied()
     {
@@ -42,7 +44,6 @@ public class MLAgentSpawner : MonoBehaviour
             SpawnZombies();
         } else if (this.transform.childCount <= 0 && Waves <= currentWave)
         {
-            done = true;
             Debug.Log("You win!");
             //Update text to YOU WIN!
             EndGame();
@@ -51,8 +52,19 @@ public class MLAgentSpawner : MonoBehaviour
     }
     private void EndGame()
     {
+        done = true;
+
+        Destroy(Gun);
         Destroy(GunKit);
+        //Find any remaining ammo:
+        Magazine[] magazines = FindObjectsOfType<Magazine>();
+        foreach (Magazine item in magazines)
+        {
+            Destroy(item);
+        }
         //Show win or lose UI.
+
+        Destroy(this.gameObject);
     }
     private void SpawnZombies()
     {
@@ -67,9 +79,6 @@ public class MLAgentSpawner : MonoBehaviour
             
             capsuleAgent capsuleAgent = newObject.GetComponent<capsuleAgent>();
             capsuleAgent.Target = Target;
-            capsuleAgent.Verbose = false;
-            capsuleAgent.DestroyOnEnd = true;
-            capsuleAgent.EndWhenGoingBack = false;
             capsuleAgent.AgentGameSpawner = this;
         }
     }
