@@ -102,7 +102,7 @@ public class MLAgentSpawner : MonoBehaviour
             
             capsuleAgent capsuleAgent = newObject.GetComponent<capsuleAgent>();
             capsuleAgent.Target = Target;
-            //capsuleAgent.AgentGameSpawner = this;
+            capsuleAgent.AgentGameSpawner = this;
 
         }
     }
