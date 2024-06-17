@@ -2275,8 +2275,8 @@ MonoBehaviour:
   MaxStep: 3000
   Verbose: 0
   StartCheckpoint: 0
-  DistanceToTargetMinimum: 1
-  DestroyOnEnd: 1
+  DistanceToTargetMinimum: 1.4
+  DestroyOnEnd: 0
   EndWhenGoingBack: 0
   EndWhenTouchingWall: 0
   EndWhenStepsReached: 0
@@ -2290,12 +2290,11 @@ MonoBehaviour:
   StepPunishment: 0.0005
   TargetStart: {fileID: 0}
   TargetEnd: {fileID: 0}
+  TargetBox: {fileID: 0}
   AgentGameSpawner: {fileID: 0}
   Target: {fileID: 0}
   rb: {fileID: 6772053834788073230}
   Spawner: {fileID: 0}
-  speedMultiplier: 0.1
-  rotationmultiplier: 0
 --- !u!114 &3262522584854762691
 MonoBehaviour:
   m_ObjectHideFlags: 0
