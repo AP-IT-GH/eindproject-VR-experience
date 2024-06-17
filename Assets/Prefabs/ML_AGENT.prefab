@@ -2669,19 +2669,21 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 3000
   Verbose: 1
+  DestroyOnEnd: 0
   StartCheckpoint: 0
   EndWhenGoingBack: 1
   EndWhenTouchingWall: 0
-  CheckpointAward: 4
+  CheckpointAward: 5
   TargetAward: 50
-  PunishmentWallTouch: 0.15
-  PunishmentGoingBack: 3
+  PunishmentWallTouch: 0.05
+  PunishmentGoingBack: 1
   ObstacleTouchedPunishmentWeb: 1
   ObstacleTouchedPunishmentHole: 3
-  JumpingPunishment: 0.05
-  StepPunishment: 0.00005
+  JumpingPunishment: 0.06
+  StepPunishment: 0.0005
   TargetStart: {fileID: 0}
   TargetEnd: {fileID: 0}
+  AgentGameSpawner: {fileID: 0}
   Target: {fileID: 0}
   rb: {fileID: 8878673377162984832}
   Spawner: {fileID: 0}
