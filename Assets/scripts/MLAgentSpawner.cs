@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class MLAgentSpawner : MonoBehaviour
     public Transform SpawnBox;
     public GameObject Target;
     public BarrierSpawner Spawner;
+    public GameObject GunKitPrefab;
+    public GameObject StartEnvironment;
 
     [Header("How many to spawn initially.")]
     public int SpawnAmount;
@@ -18,22 +21,37 @@ public class MLAgentSpawner : MonoBehaviour
     [Header("The scale that the zombies grow by every wave.")]
     public float ScalePerWave;
 
-    [Header("PLAYER WIN.")]
-    public GameObject GunKit;
-    public GameObject Gun;
-    public Canvas UICanvas;
-    public Text StatusText;
+    [Header("MENU'S")]
+    public GameObject WinMenu;
+    public GameObject StartMenu;
+    public GameObject LoseMenu;
 
     private int currentWave;
-    private bool done = false;
+    private bool paused = true;
+
+    private GameObject gunKit;
+    private GameObject gun;
+
+    public void StartGame()
+    {
+        paused = false;
+
+        StartMenu.SetActive(false);
+        LoseMenu.SetActive(false);
+        WinMenu.SetActive(false);
+
+        gunKit = Instantiate(GunKitPrefab, StartEnvironment.transform);
+        gun = gunKit.GetComponentInChildren<GunObject>().gameObject;
+    }
+
     private void Update()
     {
-        if (!done)
+        if (!paused)
             CheckIfZombieDied();
     }
     public void PlayerDied()
     {
-        Debug.Log("You lose!");
+        LoseMenu.SetActive(true);
         EndGame();
     }
     public void CheckIfZombieDied()
@@ -42,32 +60,37 @@ public class MLAgentSpawner : MonoBehaviour
         {
             currentWave++;
             SpawnZombies();
-        } else if (this.transform.childCount <= 0 && Waves <= currentWave)
+        }
+        else if (this.transform.childCount <= 0 && Waves <= currentWave)
         {
-            Debug.Log("You win!");
-            //Update text to YOU WIN!
+            WinMenu.SetActive(true);
             EndGame();
         }
 
     }
     private void EndGame()
     {
-        done = true;
+        paused = true;
 
-        Destroy(Gun);
-        Destroy(GunKit);
+        Destroy(gun);
+        Destroy(gunKit);
+
         //Find any remaining ammo:
         Magazine[] magazines = FindObjectsOfType<Magazine>();
         foreach (Magazine item in magazines)
         {
             Destroy(item);
         }
-        //Show win or lose UI.
 
-        Destroy(this.gameObject);
+        capsuleAgent[] zombies = gameObject.GetComponentsInChildren<capsuleAgent>();
+        foreach (capsuleAgent item in zombies)
+        {
+            Destroy(item.gameObject);
+        }
     }
     private void SpawnZombies()
     {
+
         Spawner.SpawnRandomizedObjects();
 
         int amountOfZombies = Convert.ToInt32(SpawnAmount + (currentWave * ScalePerWave));
@@ -79,7 +102,8 @@ public class MLAgentSpawner : MonoBehaviour
             
             capsuleAgent capsuleAgent = newObject.GetComponent<capsuleAgent>();
             capsuleAgent.Target = Target;
-            capsuleAgent.AgentGameSpawner = this;
+            //capsuleAgent.AgentGameSpawner = this;
+
         }
     }
 

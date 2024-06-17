@@ -70,6 +70,8 @@ public class capsuleAgent : Agent
     [Header("OBJECTS")]
     public Transform TargetStart;
     public Transform TargetEnd;
+    public Transform TargetBox;
+
     public MLAgentSpawner AgentGameSpawner;
 
     public GameObject Target;
@@ -102,6 +104,9 @@ public class capsuleAgent : Agent
                     TargetEnd.localPosition.z
                     )
                 );
+
+        if (TargetBox != null)
+            Target.transform.localPosition = RandomPointInBox(TargetBox.transform.position, targetInitPosition, TargetBox.GetComponent<MeshRenderer>().bounds.size);
 
         checkpoint = StartCheckpoint;
 
@@ -396,6 +401,14 @@ public class capsuleAgent : Agent
 
         discreteActions[ (int)discreteType.ROTATION ] = Convert.ToInt32(Input.GetAxis("Horizontal")) + 1;
         discreteActions[ (int)discreteType.MOVEMENT ] = Convert.ToInt32(Input.GetAxis("Vertical"));
+    }
+    private static Vector3 RandomPointInBox(Vector3 center, Vector3 objectBasisPos, Vector3 size)
+    {
+        return center + new Vector3(
+           (UnityEngine.Random.value - 0.5f) * size.x,
+           -size.y + 0.5f + objectBasisPos.y,
+           (UnityEngine.Random.value - 0.5f) * size.z
+        ); ;
     }
 }
 
