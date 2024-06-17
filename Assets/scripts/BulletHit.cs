@@ -9,7 +9,6 @@ public class BulletHit : MonoBehaviour
     {
         gun.Hit(collision);
 
-        if (collision.collider.tag == "Zombie")
-            Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

@@ -2275,7 +2275,7 @@ MonoBehaviour:
   MaxStep: 3000
   Verbose: 0
   StartCheckpoint: 0
-  DistanceToTargetMinimum: 1
+  DistanceToTargetMinimum: 1.5
   DestroyOnEnd: 1
   EndWhenGoingBack: 0
   EndWhenTouchingWall: 0
@@ -2294,8 +2294,6 @@ MonoBehaviour:
   Target: {fileID: 0}
   rb: {fileID: 6772053834788073230}
   Spawner: {fileID: 0}
-  speedMultiplier: 0.1
-  rotationmultiplier: 0
 --- !u!114 &3262522584854762691
 MonoBehaviour:
   m_ObjectHideFlags: 0
