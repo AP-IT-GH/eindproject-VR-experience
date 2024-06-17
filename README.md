@@ -101,9 +101,11 @@ Spring code:
   - Een straf per gezette stap
 
 ML-Agent punten configuratie:
+
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/48f8e48a-a661-477e-8cf8-423f3a3b7deb)
 
 Code voor checkpoint beloning:
+
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/5f340fcf-d300-4fdb-a63f-da1b14127757)
 
 
