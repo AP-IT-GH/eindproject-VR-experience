@@ -2276,7 +2276,7 @@ MonoBehaviour:
   Verbose: 0
   StartCheckpoint: 0
   DistanceToTargetMinimum: 1.4
-  DestroyOnEnd: 0
+  DestroyOnEnd: 1
   EndWhenGoingBack: 0
   EndWhenTouchingWall: 0
   EndWhenStepsReached: 0
