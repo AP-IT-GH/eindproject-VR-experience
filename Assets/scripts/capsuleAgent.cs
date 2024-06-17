@@ -7,6 +7,7 @@ using System.Collections;
 using System;
 using static UnityEngine.GraphicsBuffer;
 using Unity.Mathematics;
+using Unity.XR.CoreUtils;
 
 
 public class capsuleAgent : Agent
@@ -20,17 +21,23 @@ public class capsuleAgent : Agent
 
     [Header("ML AGENT SETTINGS")]
 
-    [Tooltip("Destroys the agent when the episode ends.")]
-    public bool DestroyOnEnd = false;
-
     [Tooltip("The checkpoint the ML agent starts at.")]
     public int StartCheckpoint;
+
+    [Tooltip("The distance from the zombie to target when it has it the target")]
+    public float DistanceToTargetMinimum = 1.4f;
+
+    [Tooltip("Destroys the agent when the episode ends.")]
+    public bool DestroyOnEnd = false;
 
     [Tooltip("Ends the episode when the ML agent went back a checkpoint.")]
     public bool EndWhenGoingBack = true;
 
     [Tooltip("Ends the episode when the ML agent touches a wall.")]
     public bool EndWhenTouchingWall = true;
+
+    [Tooltip("Ends the episode if the max steps are reached.")]
+    public bool EndWhenStepsReached = true;
 
     [Header("AWARDS")]
     
@@ -65,7 +72,7 @@ public class capsuleAgent : Agent
     public Transform TargetEnd;
     public MLAgentSpawner AgentGameSpawner;
 
-    public Transform Target;
+    public GameObject Target;
     public Rigidbody rb;
     public BarrierSpawner Spawner;
 
@@ -74,11 +81,10 @@ public class capsuleAgent : Agent
     private Vector3 targetInitPosition;
     private void Start()
     {
-        targetInitPosition = Target.localPosition;
+        targetInitPosition = Target.transform.localPosition;
         initPosition = gameObject.transform.localPosition;
         initRotation = gameObject.transform.localRotation;
     }
-    
     private float speedMultiplier = 0.1f;
     private float rotationmultiplier;
     private float jumpForce = 5f;
@@ -88,7 +94,7 @@ public class capsuleAgent : Agent
         currentlyTouching = TouchObjectType.NOTHING;
 
         if (TargetEnd != null && TargetStart != null)
-            Target.localPosition = new Vector3(
+            Target.transform.localPosition = new Vector3(
                 targetInitPosition.x, 
                 targetInitPosition.y, 
                 UnityEngine.Random.Range(
@@ -147,10 +153,10 @@ public class capsuleAgent : Agent
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
-        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
+        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.transform.localPosition);
 
         // Reached target.
-        if (distanceToTarget < 1.42f)
+        if (distanceToTarget < DistanceToTargetMinimum)
         {
             AddReward(TargetAward);
 
@@ -169,7 +175,7 @@ public class capsuleAgent : Agent
             EpisodeEnd();
         }
 
-        if (this.MaxStep <= this.StepCount)
+        if (this.MaxStep <= this.StepCount && EndWhenStepsReached)
         {
             if (Verbose)
                 Debug.Log("Max steps reached!");

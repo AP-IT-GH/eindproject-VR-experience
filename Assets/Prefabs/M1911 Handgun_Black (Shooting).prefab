@@ -1008,7 +1008,7 @@ MonoBehaviour:
   barrelLocation: {fileID: 8127533988604911957}
   casingExitLocation: {fileID: 3597328546370930350}
   destroyTimer: 2
-  shotPower: 700
+  shotPower: 1500
   ejectPower: 250
   source: {fileID: 8618135142093305452}
   fireSound: {fileID: 8300000, guid: aaef5231b452ca64a8642aeff708e1cf, type: 3}
@@ -1016,6 +1016,8 @@ MonoBehaviour:
   noAmmo: {fileID: 8300000, guid: b5f6fee0c794e1e45802633ab5d71b90, type: 3}
   magazine: {fileID: 0}
   socketInteractor: {fileID: 2501328508609584017}
+  MagazineInGunColliderPosition: {x: 0, y: 0, z: 0}
+  MagazineInGunColliderScale: {x: 0, y: 0, z: 0}
 --- !u!82 &8618135142093305452
 AudioSource:
   m_ObjectHideFlags: 0
