@@ -2164,7 +2164,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5818717433227848699}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
   m_Controller: {fileID: 9100000, guid: 2ef8e6599b7f9934e8ff0d64c5325a1f, type: 2}
   m_CullingMode: 1
@@ -2274,6 +2274,7 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 3000
   Verbose: 1
+  DestroyOnEnd: 0
   StartCheckpoint: 0
   EndWhenGoingBack: 1
   EndWhenTouchingWall: 0
@@ -2287,6 +2288,7 @@ MonoBehaviour:
   StepPunishment: 0.0005
   TargetStart: {fileID: 0}
   TargetEnd: {fileID: 0}
+  AgentGameSpawner: {fileID: 0}
   Target: {fileID: 0}
   rb: {fileID: 6772053834788073230}
   Spawner: {fileID: 0}
