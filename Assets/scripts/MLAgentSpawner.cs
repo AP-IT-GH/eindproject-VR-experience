@@ -10,6 +10,7 @@ public class MLAgentSpawner : MonoBehaviour
     public Transform SpawnBox;
     public GameObject Target;
     public BarrierSpawner Spawner;
+    public GameObject startScreen;
 
     [Header("How many to spawn initially.")]
     public int SpawnAmount;
@@ -26,9 +27,19 @@ public class MLAgentSpawner : MonoBehaviour
 
     private int currentWave;
     private bool done = false;
+    private bool gameStarted = false;
+
+    public void StartGame()
+    {
+        Debug.Log("StartGame method called."); 
+        gameStarted = true; 
+        startScreen.SetActive(false);
+        SpawnZombies();
+    }
+
     private void Update()
     {
-        if (!done)
+        if (!done && gameStarted)
             CheckIfZombieDied();
     }
     public void PlayerDied()
@@ -36,14 +47,30 @@ public class MLAgentSpawner : MonoBehaviour
         Debug.Log("You lose!");
         EndGame();
     }
+    //public void CheckIfZombieDied()
+    //{
+    //    if (gameStarted)
+    //    {
+    //        currentWave++;
+    //        SpawnZombies();
+    //    } else if (this.transform.childCount <= 0 && Waves <= currentWave)
+    //    {
+    //        Debug.Log("You win!");
+    //        //Update text to YOU WIN!
+    //        EndGame();
+    //    }
+    //}
+
     public void CheckIfZombieDied()
     {
         if (this.transform.childCount <= 0 && Waves > currentWave)
         {
             currentWave++;
             SpawnZombies();
-        } else if (this.transform.childCount <= 0 && Waves <= currentWave)
+        }
+        else if (this.transform.childCount <= 0 && Waves <= currentWave)
         {
+            done = true;
             Debug.Log("You win!");
             //Update text to YOU WIN!
             EndGame();
@@ -68,6 +95,7 @@ public class MLAgentSpawner : MonoBehaviour
     }
     private void SpawnZombies()
     {
+
         Spawner.SpawnRandomizedObjects();
 
         int amountOfZombies = Convert.ToInt32(SpawnAmount + (currentWave * ScalePerWave));
@@ -80,6 +108,7 @@ public class MLAgentSpawner : MonoBehaviour
             capsuleAgent capsuleAgent = newObject.GetComponent<capsuleAgent>();
             capsuleAgent.Target = Target;
             capsuleAgent.AgentGameSpawner = this;
+
         }
     }
 
