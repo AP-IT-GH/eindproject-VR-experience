@@ -106,7 +106,7 @@ public class capsuleAgent : Agent
                 );
 
         if (TargetBox != null)
-            Target.transform.localPosition = RandomPointInBox(TargetBox.transform.position, targetInitPosition, TargetBox.GetComponent<MeshRenderer>().bounds.size);
+            Target.transform.localPosition = RandomPointInBox(TargetBox.transform.localPosition, targetInitPosition, TargetBox.GetComponent<MeshRenderer>().bounds.size);
 
         checkpoint = StartCheckpoint;
 
