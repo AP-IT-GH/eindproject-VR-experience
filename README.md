@@ -58,11 +58,13 @@ Trainen kan je doen in het RoanEnvTest scene, de game kan men spelen in de GAME 
 
 Code voor de observaties:
 
-![Code voor de observaties](https://i.imgur.com/a/v7nH9Yz)
+![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/f16d65ef-9bde-41a7-aeaa-fc2003bc71f5)
+
 
 Zombie met sensoren:
 
-![Zombie met sensoren](https://i.imgur.com/a/BOLOYWo)
+![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/2f7ec506-bbde-432d-8e5d-8d9191bf9c36)
+
 
 #### Mogelijke acties
 
@@ -77,11 +79,13 @@ De mogelijke acties zijn beschreven in de TouchObjectType enum.
 
 Beweging code:
 
-![Alt text](https://i.imgur.com/a/d8F5oY3 "Beweging code")
+![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/f5565a07-3d36-4e45-a432-e703817e9b16)
+
 
 Spring code:
 
-![Alt text](https://i.imgur.com/a/MS7Dqht "Spring code")
+![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/195293f5-d2bc-4b01-8e1d-b3c405c06101)
+
 
 #### Beloningen
 
@@ -97,9 +101,11 @@ Spring code:
   - Een straf per gezette stap
 
 ML-Agent punten configuratie:
-![ML-Agent punten configuratie](https://i.imgur.com/a/CwU6afK)
+![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/48f8e48a-a661-477e-8cf8-423f3a3b7deb)
+
 Code voor checkpoint beloning:
-![Code voor checkpoint beloning](https://i.imgur.com/a/iHSdBp0)
+![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/5f340fcf-d300-4fdb-a63f-da1b14127757)
+
 
 ### Beschrijving van de objecten
 
@@ -178,7 +184,8 @@ Er is een statische map opgezet waardoor de zombies moeten navigeren.
 
 ### Oude grafiek
 
-![Oude grafiek](https://i.imgur.com/a/T7dXUhB)
+![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/bcb5c461-00d1-441b-9254-344ed914d46c)
+
 
 De grafiek die we hier terugvinden, is de grafiek van de eerste training.
 
@@ -217,7 +224,8 @@ Dit zorgt voor een slechte training.
 
 ### Nieuwe grafiek
 
-![Nieuwe grafiek](https://i.imgur.com/a/JedO19D)
+![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/b187193f-6f19-40b2-a5fd-69c93c408124)
+
 
 ##### Environment/Cumulatieve Reward
 
