@@ -119,7 +119,7 @@ public class SimpleShoot : MonoBehaviour
     private IEnumerator DestroyZombieAfterAnimation(GameObject zombie, Animator zombieAnimator)
     {
         
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         Destroy(zombie);
     }
