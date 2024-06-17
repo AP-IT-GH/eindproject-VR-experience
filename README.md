@@ -28,9 +28,8 @@ Hierbij zullen we de fouten waaruit we geleerd hebben bespreken, en waarbij we o
 ### Reproduceren project
 
 Voor het opstarten en downloaden van het project moet je het volgende doen:  
-**(!!!!Emir, gelieve dit in een codeblock te steken!!!)**
 
-git clone <https://github.com/AP-IT-GH/eindproject-VR-experience.git>
+    git clone <https://github.com/AP-IT-GH/eindproject-VR-experience.git>
 
 Trainen kan je doen in het RoanEnvTest scene, de game kan men spelen in de GAME scene.
 
