@@ -1,0 +1,65 @@
+{
+    "capsuleAgent": {
+        "checkpoints": [
+            {
+                "steps": 4499958,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-4499958.onnx",
+                "reward": 22.251364618043105,
+                "creation_time": 1718601807.8991644,
+                "auxillary_file_paths": [
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-4499958.pt"
+                ]
+            },
+            {
+                "steps": 4999991,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-4999991.onnx",
+                "reward": 36.63266296156993,
+                "creation_time": 1718603314.4660087,
+                "auxillary_file_paths": [
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-4999991.pt"
+                ]
+            },
+            {
+                "steps": 5499958,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-5499958.onnx",
+                "reward": 45.65832837422689,
+                "creation_time": 1718604817.5843396,
+                "auxillary_file_paths": [
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-5499958.pt"
+                ]
+            },
+            {
+                "steps": 5999947,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-5999947.onnx",
+                "reward": 17.474999024532735,
+                "creation_time": 1718606328.8312273,
+                "auxillary_file_paths": [
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-5999947.pt"
+                ]
+            },
+            {
+                "steps": 6000011,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-6000011.onnx",
+                "reward": 17.474999024532735,
+                "creation_time": 1718606328.9078486,
+                "auxillary_file_paths": [
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-6000011.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 6000011,
+            "file_path": "results\\CubeAgent_NEW\\capsuleAgent.onnx",
+            "reward": 17.474999024532735,
+            "creation_time": 1718606328.9078486,
+            "auxillary_file_paths": [
+                "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-6000011.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

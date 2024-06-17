@@ -15,6 +15,7 @@ TagManager:
   - SpawnBox
   - target
   - goodrewardbox
+  - floor
   layers:
   - Default
   - TransparentFX

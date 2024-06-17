@@ -82,7 +82,7 @@ public class capsuleAgent : Agent
     private float speedMultiplier = 0.1f;
     private float rotationmultiplier;
     private float jumpForce = 5f;
-    private bool episodeEnded = false;
+
     private TouchObjectType currentlyTouching = TouchObjectType.NOTHING;
     public override void OnEpisodeBegin() {
         currentlyTouching = TouchObjectType.NOTHING;
@@ -97,12 +97,6 @@ public class capsuleAgent : Agent
                     )
                 );
 
-        Touchable[] touchables = gameObject.transform.parent.GetComponentsInChildren<Touchable>();
-        foreach (Touchable touchable in touchables)
-        {
-            touchable.HasBeenTouched = false;
-        }
-
         checkpoint = StartCheckpoint;
 
         //zet de agent op zijn plaats en collider aan.
@@ -116,18 +110,20 @@ public class capsuleAgent : Agent
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
+        //Annoying... it wont SET!!!
+        webTouching = false;
         speedMultiplier = 0.1f;
+
         rotationmultiplier = 2f;
         jumpForce = 5f;
-        episodeEnded = false;
     }
     public override void CollectObservations(VectorSensor sensor) {
         //Distance between target and agent.
-        sensor.AddObservation(Vector3.Distance(Target.transform.position, this.transform.position));
+        sensor.AddObservation(Vector3.Distance(Target.transform.localPosition, this.transform.localPosition));
 
         //Position of target and itself
-        sensor.AddObservation(Target.transform.position);
-        sensor.AddObservation(this.transform.position);
+        sensor.AddObservation(Target.transform.localPosition);
+        sensor.AddObservation(this.transform.localPosition);
 
         //The current checkpoint we are at
         sensor.AddObservation(checkpoint);
@@ -138,6 +134,8 @@ public class capsuleAgent : Agent
     }
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
+        //checkRayCast();
+
         transform.Translate(discreteActionsToMovementVector(actionBuffers.DiscreteActions) * speedMultiplier);
         transform.Rotate(discreteActionsToRotationVector(actionBuffers.DiscreteActions) * rotationmultiplier);
 
@@ -154,26 +152,21 @@ public class capsuleAgent : Agent
         // Reached target.
         if (distanceToTarget < 1.42f)
         {
-            SetReward(TargetAward);
+            AddReward(TargetAward);
+
             if (Verbose)
                 Debug.Log("We made it to the target!: " + TargetAward);
 
-            AgentGameSpawner.PlayerDied();
+            if (AgentGameSpawner != null)
+                AgentGameSpawner.PlayerDied();
 
-            CalculateRewardsAndPunishments();
-            EndEpisode();
+            EpisodeEnd();
         }
 
         // Fell through hole.
         if (transform.position.y < -5)
         {
-            AddReward(-ObstacleTouchedPunishmentHole);
-
-            if (Verbose)
-                Debug.Log("Fell through a hole! Punishment: " + (-ObstacleTouchedPunishmentHole));
-
-            CalculateRewardsAndPunishments();
-            EndEpisode();
+            EpisodeEnd();
         }
 
         if (this.MaxStep <= this.StepCount)
@@ -181,8 +174,44 @@ public class capsuleAgent : Agent
             if (Verbose)
                 Debug.Log("Max steps reached!");
 
-            CalculateRewardsAndPunishments();
-            EndEpisode();
+            EpisodeEnd();
+        }
+
+        //This bug is so annoying...
+        if (!webTouching)
+        {
+            speedMultiplier = 0.1f;
+        }
+
+        CalculateRewardsAndPunishmentsPerStep();
+    }
+    private void checkRayCast()
+    {
+        RayPerceptionSensorComponent3D m_rayPerceptionSensorComponent3D = GetComponent<RayPerceptionSensorComponent3D>();
+
+        var rayOutputs = RayPerceptionSensor.Perceive(m_rayPerceptionSensorComponent3D.GetRayPerceptionInput()).RayOutputs;
+        int lengthOfRayOutputs = rayOutputs.Length;
+
+        // Alternating Ray Order: it gives an order of
+        // (0, -delta, delta, -2delta, 2delta, ..., -ndelta, ndelta)
+        // index 0 indicates the center of raycasts
+        for (int i = 0; i < lengthOfRayOutputs; i++)
+        {
+            GameObject goHit = rayOutputs[i].HitGameObject;
+            if (goHit != null)
+            {
+                var rayDirection = rayOutputs[i].EndPositionWorld - rayOutputs[i].StartPositionWorld;
+                var scaledRayLength = rayDirection.magnitude;
+                float rayHitDistance = rayOutputs[i].HitFraction * scaledRayLength;
+
+                // Print info:
+                string dispStr = "";
+                dispStr = dispStr + "__RayPerceptionSensor - HitInfo__:\r\n";
+                dispStr = dispStr + "GameObject name: " + goHit.name + "\r\n";
+                dispStr = dispStr + "Hit distance of Ray: " + rayHitDistance + "\r\n";
+                dispStr = dispStr + "GameObject tag: " + goHit.tag + "\r\n";
+                Debug.Log(dispStr);
+            }
         }
     }
     /*
@@ -216,25 +245,36 @@ public class capsuleAgent : Agent
         );
         return rotation;
     }
-    private void CalculateRewardsAndPunishments()
+    //Calculates the rewards PER STEP.
+    private void CalculateRewardsAndPunishmentsPerStep()
     {
-        episodeEnded = true;
-
-        if (Verbose)
-            Debug.Log("Checkpoint " + checkpoint + " reached! Reward: " + checkpoint * CheckpointAward);
-
-        AddReward(checkpoint * CheckpointAward);
-        AddReward(StepCount * -StepPunishment);
-
-        if (DestroyOnEnd)
-            Destroy(gameObject);
+        //Punishment per step
+        AddReward(-(StepPunishment));
     }
 
-    private bool startWebTouch = false;
+    private void EpisodeEnd()
+    {
+        if (DestroyOnEnd)
+            Destroy(gameObject);
+        EndEpisode();
+    }
+
+    private bool isTouching = false;
+    private bool webTouching = false;
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "hole")
         {
+            if (!isTouching)
+            {
+                isTouching = true;
+
+                AddReward(-ObstacleTouchedPunishmentHole);
+
+                if (Verbose)
+                    Debug.Log("Fell through a hole! Punishment: " + (-ObstacleTouchedPunishmentHole));
+            }
+
             currentlyTouching = TouchObjectType.HOLE;
 
             gameObject.GetComponent<Collider>().enabled = false;
@@ -245,11 +285,9 @@ public class capsuleAgent : Agent
         {
             currentlyTouching = TouchObjectType.WALL;
 
-            Touchable touched = collision.gameObject.GetComponent<Touchable>();
-
-            if (!touched.HasBeenTouched)
+            if (!isTouching)
             {
-                touched.HasBeenTouched = true;
+                isTouching = true;
 
                 if (Verbose)
                     Debug.Log("Touched a wall!");
@@ -258,8 +296,7 @@ public class capsuleAgent : Agent
 
                 if (EndWhenTouchingWall)
                 {
-                    CalculateRewardsAndPunishments();
-                    EndEpisode();
+                    EpisodeEnd();
                 }
             }
         }
@@ -280,46 +317,67 @@ public class capsuleAgent : Agent
 
             Checkpoint checkpointObstacle = obstacle.gameObject.GetComponent<Checkpoint>();
 
-            if (checkpoint > checkpointObstacle.CheckpointNumber && EndWhenGoingBack)
+            if (checkpoint > checkpointObstacle.CheckpointNumber)
             {
+                webTouching = false;
+
                 if (Verbose)
                     Debug.Log("We went back! Punishment: " + (-PunishmentGoingBack));
 
                 AddReward(-PunishmentGoingBack);
 
-                CalculateRewardsAndPunishments();
-                EndEpisode();
+                if (EndWhenGoingBack)
+                {
+                    EndEpisode();
+                }
+            } else if (checkpoint != checkpointObstacle.CheckpointNumber) {
+
+                webTouching = false;
+
+                if (Verbose)
+                    Debug.Log("New checkpoint " + checkpoint + " reached! Reward: " + CheckpointAward);
+
+                AddReward(CheckpointAward);
             }
 
             checkpoint = checkpointObstacle.CheckpointNumber;
         }
         
-        if (obstacle.tag == "web")
+        if (obstacle.tag == "web" && !webTouching)
         {
-            Touchable touched = obstacle.gameObject.GetComponent<Touchable>();
+            webTouching = true;
 
-            if (!touched.HasBeenTouched)
+            if (!isTouching)
             {
+                isTouching = true;
+
                 if (Verbose)
                     Debug.Log("We touched a web! " + (-ObstacleTouchedPunishmentWeb));
 
                 AddReward(-ObstacleTouchedPunishmentWeb);
-                touched.HasBeenTouched = true;
             }
-            if (!episodeEnded)
-                speedMultiplier = 0.01f;
+            speedMultiplier = 0.01f;
+        }
+
+        if (obstacle.tag == "floor")
+        {
+            webTouching = false;
         }
     }
     private void OnCollisionExit(Collision collision)
     {
+        isTouching = false;
         currentlyTouching = TouchObjectType.NOTHING;
     }
     private void OnTriggerExit(Collider obstacle)
     {
+        isTouching = false;
+
         currentlyTouching = TouchObjectType.NOTHING;
 
-        if (obstacle.tag == "web")
+        if (obstacle.tag == "web" && webTouching)
         {
+            webTouching = false;
             speedMultiplier = 0.1f;
         }
     }
