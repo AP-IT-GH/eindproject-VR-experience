@@ -58,11 +58,11 @@ Trainen kan je doen in het RoanEnvTest scene, de game kan men spelen in de GAME 
 
 Code voor de observaties:
 
-![Alt text](https://imgur.com/a/v7nH9Yz "Code voor de observaties")
+![Code voor de observaties](https://imgur.com/a/v7nH9Yz)
 
 Zombie met sensoren:
 
-![Alt text](https://imgur.com/a/BOLOYWo "Zombie met sensoren")
+![Zombie met sensoren](https://imgur.com/a/BOLOYWo)
 
 #### Mogelijke acties
 
@@ -97,9 +97,9 @@ Spring code:
   - Een straf per gezette stap
 
 ML-Agent punten configuratie:
-![Alt text](https://imgur.com/a/CwU6afK "ML-Agent punten configuratie")
+![ML-Agent punten configuratie](https://imgur.com/a/CwU6afK)
 Code voor checkpoint beloning:
-![Alt text](https://imgur.com/a/iHSdBp0 "Code voor checkpoint beloning")
+![Code voor checkpoint beloning](https://imgur.com/a/iHSdBp0)
 
 ### Beschrijving van de objecten
 
@@ -178,7 +178,7 @@ Er is een statische map opgezet waardoor de zombies moeten navigeren.
 
 ### Oude grafiek
 
-![Alt text](https://imgur.com/a/T7dXUhB "Oude grafiek")
+![Oude grafiek](https://imgur.com/a/T7dXUhB)
 
 De grafiek die we hier terugvinden, is de grafiek van de eerste training.
 
@@ -217,7 +217,7 @@ Dit zorgt voor een slechte training.
 
 ### Nieuwe grafiek
 
-![Alt text](https://imgur.com/a/JedO19D "Nieuwe grafiek")
+![Nieuwe grafiek](https://imgur.com/a/JedO19D)
 
 ##### Environment/Cumulatieve Reward
 
