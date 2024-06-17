@@ -34,13 +34,35 @@ public class SimpleShoot : MonoBehaviour
     public XRBaseInteractor socketInteractor;
     private bool bulletInGun = false;
 
+    public Vector3 MagazineInGunColliderPosition;
+    public Vector3 MagazineInGunColliderScale;
+
+    private Vector3 magazineOriginalCenter;
+    private Vector3 magazineOriginalScale;
+
     public void AddMagazine(SelectEnterEventArgs interactable)
     {
-        magazine = interactable.interactableObject.transform.gameObject.GetComponent<Magazine>();
+        GameObject interactableObject = interactable.interactableObject.transform.gameObject;
+        BoxCollider collider = interactableObject.GetComponentInChildren<BoxCollider>();
+
+        magazineOriginalCenter = collider.center;
+        magazineOriginalScale = collider.size;
+
+        collider.center = MagazineInGunColliderPosition;
+        collider.size = MagazineInGunColliderScale;
+
+        magazine = interactableObject.GetComponent<Magazine>();
+
         source.PlayOneShot(reload);
     }
     public void RemoveMagazine(SelectExitEventArgs interactable)
     {
+        GameObject interactableObject = interactable.interactableObject.transform.gameObject;
+        BoxCollider collider = interactableObject.GetComponentInChildren<BoxCollider>();
+
+        collider.center = magazineOriginalCenter;
+        collider.size = magazineOriginalScale;
+
         magazine = null;
         source.PlayOneShot(reload);
     }

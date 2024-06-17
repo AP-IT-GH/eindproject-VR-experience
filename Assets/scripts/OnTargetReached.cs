@@ -10,7 +10,7 @@ public class OnTargetReached : MonoBehaviour
     public UnityEvent OnReached;
     private bool wasReached = false;
 
-    private void FixedUpdate()
+    private void Update()
     {
         float distance = Vector3.Distance(transform.position, target.position);
 
