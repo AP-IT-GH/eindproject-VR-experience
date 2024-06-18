@@ -56,12 +56,14 @@ public class MLAgentSpawner : MonoBehaviour
     }
     public void CheckIfZombieDied()
     {
-        if (this.transform.childCount <= 0 && Waves > currentWave)
+        int capsuleAgentsLength = this.transform.GetComponentsInChildren<capsuleAgent>().Length;
+
+        if (capsuleAgentsLength <= 0 && Waves > currentWave)
         {
             currentWave++;
             SpawnZombies();
         }
-        else if (this.transform.childCount <= 0 && Waves <= currentWave)
+        else if (capsuleAgentsLength <= 0 && Waves <= currentWave)
         {
             WinMenu.SetActive(true);
             EndGame();

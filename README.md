@@ -27,7 +27,7 @@ Hierbij zullen we de fouten waaruit we geleerd hebben bespreken, en waarbij we o
 
 ### Reproduceren project
 
-Voor het opstarten en downloaden van het project moet je het volgende doen:  
+Voor het opstarten en downloaden van het project moet je het volgende doen:
 
     git clone <https://github.com/AP-IT-GH/eindproject-VR-experience.git>
 
@@ -50,7 +50,7 @@ Trainen kan je doen in het RoanEnvTest scene, de game kan men spelen in de GAME 
 - Positie van de speler
 - Positie van zichzelf
 - Sensoren die objecten detecteren (gebaseerd op tags)  
-    \-> RayPerceptionSensor3D
+   \-> RayPerceptionSensor3D
 - Checkpoints zodat de zombie weet dat hij voorwaartse progressie maakt op het parcours
 - Afstand tussen ML-Agent(zombie) en target(speler)
 - Het huidig object die de ML-agent aanraakt
@@ -59,11 +59,9 @@ Code voor de observaties:
 
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/f16d65ef-9bde-41a7-aeaa-fc2003bc71f5)
 
-
 Zombie met sensoren:
 
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/2f7ec506-bbde-432d-8e5d-8d9191bf9c36)
-
 
 #### Mogelijke acties
 
@@ -80,11 +78,9 @@ Beweging code:
 
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/f5565a07-3d36-4e45-a432-e703817e9b16)
 
-
 Spring code:
 
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/195293f5-d2bc-4b01-8e1d-b3c405c06101)
-
 
 #### Beloningen
 
@@ -106,7 +102,6 @@ ML-Agent punten configuratie:
 Code voor checkpoint beloning:
 
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/5f340fcf-d300-4fdb-a63f-da1b14127757)
-
 
 ### Beschrijving van de objecten
 
@@ -187,7 +182,6 @@ Er is een statische map opgezet waardoor de zombies moeten navigeren.
 
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/bcb5c461-00d1-441b-9254-344ed914d46c)
 
-
 De grafiek die we hier terugvinden, is de grafiek van de eerste training.
 
 Hier gebruikte de ML agent nog steeds ContinuousActions en werden rewards pas gegeven op het einde van de episode.
@@ -226,7 +220,6 @@ Dit zorgt voor een slechte training.
 ### Nieuwe grafiek
 
 ![image](https://github.com/AP-IT-GH/eindproject-VR-experience/assets/91462967/b187193f-6f19-40b2-a5fd-69c93c408124)
-
 
 ##### Environment/Cumulatieve Reward
 
@@ -267,7 +260,7 @@ Dit houdt in dat de acties van de agent waardes kunnen aannemen tussen –1,00 e
 
 - Trage en moeilijke training:
   - Door meerdere waardes voor het bewegen van de ML agent, leert hij trager.  
-        De bewegingen zijn complexer doordat er meerdere decimale waardes zijn.
+     De bewegingen zijn complexer doordat er meerdere decimale waardes zijn.
 
 ##### Probleem 2
 
@@ -277,7 +270,7 @@ Dit betekent dus dat de agent geen directe feedback kreeg op zijn acties, maar p
 
 - Vertraagde feedback:
   - De agent had moeite om te begrijpen welke van zijn acties goed of slecht waren omdat de beloning pas later werd gegeven.  
-        In reinforcement learning is directe feedback cruciaal omdat het de agent helpt om snel te leren welke acties positieve resultaten opleveren.
+     In reinforcement learning is directe feedback cruciaal omdat het de agent helpt om snel te leren welke acties positieve resultaten opleveren.
 - Verwarring en inefficiëntie:
   - De agent werd verward omdat het moeilijk was om de relatie tussen een specifieke actie en de uiteindelijke beloning te leggen.
 
@@ -345,10 +338,10 @@ De resultaten vertellen ons of de ML agent goed bezig is, en of wij het moeten b
 
 ## Gebruikte assets
 
-Modern Guns Handgun: <https://assetstore.unity.com/packages/3d/props/guns/modern-guns-handgun-129821>
+Modern Guns: Handgun | 3D Guns | Unity Asset Store. (2018b, 24 november). Geraadpleegd van <https://assetstore.unity.com/packages/3d/props/guns/modern-guns-handgun-129821>
 
-Training table: <https://assetstore.unity.com/packages/3d/environments/training-table-136070>
+Training table | 3D Environments | Unity Asset Store. (2019, 14 juli). Geraadpleegd van <https://assetstore.unity.com/packages/3d/environments/training-table-136070>
 
-Buildings: <https://assetstore.unity.com/packages/3d/environments/free-open-building-112907>
+Free Open Building | 3D Environments | Unity Asset Store. (2018, 6 november). Geraadpleegd van <https://assetstore.unity.com/packages/3d/environments/free-open-building-112907>
 
-Zombie: <https://assetstore.unity.com/packages/3d/characters/humanoids/zombie-30232>
+Zombie | 3D Humanoids | Unity Asset Store. (2015, 25 februari). Geraadpleegd van <https://assetstore.unity.com/packages/3d/characters/humanoids/zombie-30232>

@@ -2,58 +2,58 @@
     "capsuleAgent": {
         "checkpoints": [
             {
-                "steps": 4499958,
-                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-4499958.onnx",
-                "reward": 22.251364618043105,
-                "creation_time": 1718601807.8991644,
+                "steps": 7499949,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-7499949.onnx",
+                "reward": 20.419945154143008,
+                "creation_time": 1718660782.2543228,
                 "auxillary_file_paths": [
-                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-4499958.pt"
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-7499949.pt"
                 ]
             },
             {
-                "steps": 4999991,
-                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-4999991.onnx",
-                "reward": 36.63266296156993,
-                "creation_time": 1718603314.4660087,
+                "steps": 7999985,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-7999985.onnx",
+                "reward": 46.924163023630776,
+                "creation_time": 1718662483.8696358,
                 "auxillary_file_paths": [
-                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-4999991.pt"
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-7999985.pt"
                 ]
             },
             {
-                "steps": 5499958,
-                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-5499958.onnx",
-                "reward": 45.65832837422689,
-                "creation_time": 1718604817.5843396,
+                "steps": 8499991,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-8499991.onnx",
+                "reward": 28.89535423687526,
+                "creation_time": 1718664186.92354,
                 "auxillary_file_paths": [
-                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-5499958.pt"
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-8499991.pt"
                 ]
             },
             {
-                "steps": 5999947,
-                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-5999947.onnx",
-                "reward": 17.474999024532735,
-                "creation_time": 1718606328.8312273,
+                "steps": 8999980,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-8999980.onnx",
+                "reward": 8.35193145275116,
+                "creation_time": 1718665955.3531878,
                 "auxillary_file_paths": [
-                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-5999947.pt"
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-8999980.pt"
                 ]
             },
             {
-                "steps": 6000011,
-                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-6000011.onnx",
-                "reward": 17.474999024532735,
-                "creation_time": 1718606328.9078486,
+                "steps": 9000064,
+                "file_path": "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-9000064.onnx",
+                "reward": 7.34443937329685,
+                "creation_time": 1718665955.5948367,
                 "auxillary_file_paths": [
-                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-6000011.pt"
+                    "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-9000064.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 6000011,
+            "steps": 9000064,
             "file_path": "results\\CubeAgent_NEW\\capsuleAgent.onnx",
-            "reward": 17.474999024532735,
-            "creation_time": 1718606328.9078486,
+            "reward": 7.34443937329685,
+            "creation_time": 1718665955.5948367,
             "auxillary_file_paths": [
-                "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-6000011.pt"
+                "results\\CubeAgent_NEW\\capsuleAgent\\capsuleAgent-9000064.pt"
             ]
         }
     },
